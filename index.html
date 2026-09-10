@@ -8,32 +8,41 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛑️</text></svg>">
 
   <!-- 아이폰 홈 화면 추가용 아이콘 (Safari 호환 Canvas PNG) -->
-  <script>
+<script>
     (function() {
       const canvas = document.createElement('canvas');
       canvas.width = 180;
       canvas.height = 180;
       const ctx = canvas.getContext('2d');
 
-      ctx.fillStyle = '#2563eb';
-      if (ctx.roundRect) {
-        ctx.roundRect(0, 0, 180, 180, 40);
-        ctx.fill();
-      } else {
-        ctx.fillRect(0, 0, 180, 180);
-      }
+      // 1. 깨끗한 흰색 배경
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 180, 180);
 
-      ctx.font = '100px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('⛑️', 90, 95);
+      // 2. 안전모 돔 (진한 노란색)
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.arc(90, 88, 50, Math.PI, 0, false);
+      ctx.fill();
+
+      // 3. 안전모 챙
+      ctx.beginPath();
+      ctx.ellipse(90, 92, 62, 11, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 4. 안전모 정중앙 녹십자 마크
+      ctx.fillStyle = '#16a34a';
+      // 세로선
+      ctx.fillRect(86, 58, 8, 24);
+      // 가로선
+      ctx.fillRect(78, 66, 24, 8);
 
       const link = document.createElement('link');
       link.rel = 'apple-touch-icon';
       link.href = canvas.toDataURL('image/png');
       document.head.appendChild(link);
     })();
-  </script> 
+  </script>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
