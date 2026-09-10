@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>산안기 퀵패스 - 산업안전기사 모바일 핵심 학습기</title>
+  <title>산안기 퀵패스 - 필기 핵심 완성</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -39,14 +39,14 @@
     <header class="flex justify-between items-center pb-3 border-b border-slate-200 dark:border-slate-800">
       <div>
         <h1 class="text-lg font-black tracking-tight text-blue-600 dark:text-blue-400">⚡ 산안기 퀵패스</h1>
-        <p class="text-xs text-slate-500 dark:text-slate-400" id="header-subtitle">출퇴근 자투리 마스터</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400">CH 01 ~ 05 전범위 압축완성</p>
       </div>
       <div class="flex items-center gap-1.5">
         <button id="dark-toggle" class="p-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-sm active:scale-95 transition-transform" title="다크모드">🌓</button>
       </div>
     </header>
 
-    <!-- 모드 전환 탭 (4지선다 / OX 퀴즈 / 포켓 요약노트 / 오답·보관함) -->
+    <!-- 모드 전환 탭 -->
     <nav class="grid grid-cols-4 gap-1.5 py-2.5 text-xs font-bold">
       <button class="nav-tab py-2 rounded-xl bg-blue-600 text-white shadow-sm transition-all text-center" data-tab="quiz">4지선다</button>
       <button class="nav-tab py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all text-center" data-tab="ox">OX스피드</button>
@@ -54,7 +54,7 @@
       <button class="nav-tab py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all text-center" data-tab="bookmarks">오답·보관함</button>
     </nav>
 
-    <!-- 1. 4지선다 퀴즈 영역 -->
+    <!-- 1. 4지선다 영역 -->
     <section id="section-quiz" class="tab-content flex-1 flex flex-col justify-between my-2">
       <!-- 챕터 필터 -->
       <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1 text-xs font-semibold">
@@ -80,9 +80,7 @@
           <h2 id="quiz-title" class="text-base font-bold leading-snug"></h2>
         </div>
 
-        <div id="quiz-options" class="flex flex-col gap-2 mt-1">
-          <!-- 선지 생성 -->
-        </div>
+        <div id="quiz-options" class="flex flex-col gap-2 mt-1"></div>
 
         <div id="quiz-explanation-box" class="hidden mt-2 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700 text-xs leading-relaxed">
           <span class="font-bold block mb-1 text-sm" id="quiz-result-status"></span>
@@ -90,7 +88,7 @@
         </div>
       </div>
 
-      <!-- 4지선다 하단 내비게이션 -->
+      <!-- 하단 네비게이션 -->
       <div class="pt-3 flex items-center justify-between gap-2">
         <button id="quiz-prev-btn" class="flex-1 py-3 rounded-2xl font-bold text-sm bg-slate-200 dark:bg-slate-800 active:scale-95 transition-all">이전</button>
         <button id="quiz-random-btn" class="px-4 py-3 rounded-2xl font-bold text-sm bg-slate-200 dark:bg-slate-800 active:scale-95 transition-all">🎲 셔플</button>
@@ -100,70 +98,87 @@
 
     <!-- 2. OX 스피드 모드 영역 -->
     <section id="section-ox" class="tab-content hidden flex-1 flex flex-col justify-between my-2">
-      <div class="flex justify-between items-center text-xs font-semibold px-1 pb-1">
-        <span class="text-amber-500 font-bold">🔥 1초 직관 훈련 모드</span>
-        <span id="ox-streak-text" class="text-slate-500 dark:text-slate-400">연속 정답: 0회</span>
+      <!-- OX 챕터 필터 -->
+      <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1 text-xs font-semibold">
+        <button class="ox-cat-btn px-3 py-1.5 rounded-full bg-blue-600 text-white whitespace-nowrap" data-cat="ALL">전체 (50)</button>
+        <button class="ox-cat-btn px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 whitespace-nowrap" data-cat="CH1">1장 (10)</button>
+        <button class="ox-cat-btn px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 whitespace-nowrap" data-cat="CH2">2장 (10)</button>
+        <button class="ox-cat-btn px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 whitespace-nowrap" data-cat="CH3">3장 (10)</button>
+        <button class="ox-cat-btn px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 whitespace-nowrap" data-cat="CH4">4장 (10)</button>
+        <button class="ox-cat-btn px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 whitespace-nowrap" data-cat="CH5">5장 (10)</button>
       </div>
 
+      <div class="flex justify-between items-center text-xs font-semibold px-1 py-1">
+        <span id="ox-counter" class="text-blue-500 font-bold">1 / 50</span>
+        <span id="ox-streak-text" class="text-amber-500 font-bold">연속 정답: 0회 🔥</span>
+      </div>
+
+      <!-- OX 지문 카드 -->
       <div class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 my-auto flex flex-col gap-4 text-center relative">
         <span id="ox-chapter" class="text-xs font-bold text-blue-500"></span>
-        <div class="min-h-[120px] flex items-center justify-center">
+        <div class="min-h-[110px] flex items-center justify-center">
           <p id="ox-statement" class="text-base font-extrabold leading-relaxed text-slate-800 dark:text-slate-100"></p>
         </div>
         
-        <div id="ox-feedback-box" class="hidden p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs text-left leading-relaxed">
+        <div id="ox-feedback-box" class="hidden p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs text-left leading-relaxed">
           <span id="ox-feedback-title" class="font-bold block mb-1 text-sm"></span>
           <p id="ox-feedback-desc" class="text-slate-600 dark:text-slate-300"></p>
         </div>
       </div>
 
-      <!-- OX 선택 대형 버튼 -->
+      <!-- 깔끔한 O, X 전용 버튼 -->
       <div class="pt-3 grid grid-cols-2 gap-3" id="ox-buttons-box">
-        <button class="ox-choice-btn py-5 rounded-2xl font-black text-2xl bg-emerald-500/10 border-2 border-emerald-500 text-emerald-600 active:scale-95 transition-transform" data-val="O">⭕ O (그렇다)</button>
-        <button class="ox-choice-btn py-5 rounded-2xl font-black text-2xl bg-rose-500/10 border-2 border-rose-500 text-rose-600 active:scale-95 transition-transform" data-val="X">❌ X (아니다)</button>
+        <button class="ox-choice-btn py-5 rounded-2xl font-black text-3xl bg-emerald-500/10 border-2 border-emerald-500 text-emerald-600 active:scale-95 transition-transform" data-val="O">O</button>
+        <button class="ox-choice-btn py-5 rounded-2xl font-black text-3xl bg-rose-500/10 border-2 border-rose-500 text-rose-600 active:scale-95 transition-transform" data-val="X">X</button>
       </div>
 
-      <div class="pt-2 hidden" id="ox-next-box">
-        <button id="ox-next-btn" class="w-full py-3.5 rounded-2xl font-bold text-sm bg-blue-600 text-white active:scale-95 transition-all">다음 지문 풀기 ➔</button>
+      <div class="pt-3 hidden" id="ox-next-box">
+        <button id="ox-next-btn" class="w-full py-4 rounded-2xl font-bold text-sm bg-blue-600 text-white active:scale-95 transition-all shadow-md">다음 지문 풀기 ➔</button>
       </div>
     </section>
 
-    <!-- 3. 포켓 요약노트 영역 -->
-    <section id="section-summary" class="tab-content hidden flex-1 flex flex-col gap-3 my-2">
-      <!-- 실시간 검색창 -->
+    <!-- 3. 포켓 요약노트 (전체 내용 반영) -->
+    <section id="section-summary" class="tab-content hidden flex-1 flex flex-col gap-2.5 my-2">
+      <!-- 실시간 검색 및 필터 -->
       <div class="relative">
-        <input id="summary-search" type="text" placeholder="검색 (예: 도미노, ABE, 4M, 주기, 의식)" class="w-full p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm outline-none focus:border-blue-500 transition-colors" />
+        <input id="summary-search" type="text" placeholder="전체 이론 검색 (예: 중대재해, 도미노, TWI, 4M, ABE, 4,450, Phase 등)" class="w-full p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs outline-none focus:border-blue-500 transition-colors" />
       </div>
 
-      <!-- 카드 목록 -->
-      <div id="summary-cards-container" class="flex-1 overflow-y-auto max-h-[62vh] no-scrollbar flex flex-col gap-2.5 pr-0.5">
-        <!-- 요약 카드 동적 삽입 -->
+      <!-- 챕터별 바로가기 필터 -->
+      <div class="flex gap-1 overflow-x-auto no-scrollbar pb-0.5 text-xs font-semibold">
+        <button class="summary-cat-btn px-2.5 py-1 rounded-lg bg-blue-600 text-white whitespace-nowrap" data-cat="ALL">전체</button>
+        <button class="summary-cat-btn px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 whitespace-nowrap" data-cat="CH1">1장 재해예방</button>
+        <button class="summary-cat-btn px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 whitespace-nowrap" data-cat="CH2">2장 보호구·표지</button>
+        <button class="summary-cat-btn px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 whitespace-nowrap" data-cat="CH3">3장 안전심리</button>
+        <button class="summary-cat-btn px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 whitespace-nowrap" data-cat="CH4">4장 행동과학</button>
+        <button class="summary-cat-btn px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 whitespace-nowrap" data-cat="CH5">5장 안전교육</button>
       </div>
+
+      <!-- 요약 카드 리스트 -->
+      <div id="summary-cards-container" class="flex-1 overflow-y-auto max-h-[60vh] no-scrollbar flex flex-col gap-2.5 pr-0.5"></div>
     </section>
 
-    <!-- 4. 오답노트 & 보관함 영역 -->
+    <!-- 4. 오답노트 & 보관함 -->
     <section id="section-bookmarks" class="tab-content hidden flex-1 flex flex-col justify-between my-2">
       <div class="flex justify-between items-center pb-2 px-1">
-        <h3 class="text-sm font-bold">⭐ 복습 보관함 (<span id="bookmark-count">0</span>)</h3>
+        <h3 class="text-xs font-bold">⭐ 복습 보관함 (<span id="bookmark-count">0</span>문제)</h3>
         <button id="clear-bookmarks-btn" class="text-xs text-rose-500 hover:underline">전체 비우기</button>
       </div>
 
-      <div id="bookmarks-list" class="flex-1 overflow-y-auto max-h-[65vh] no-scrollbar flex flex-col gap-2.5">
-        <!-- 저장된 오답/북마크 카드 리스트 -->
-      </div>
+      <div id="bookmarks-list" class="flex-1 overflow-y-auto max-h-[65vh] no-scrollbar flex flex-col gap-2.5"></div>
     </section>
 
   </div>
 
   <script>
     // ----------------------------------------------------
-    // [1] 4지선다 기출 데이터베이스
+    // [1] 4지선다 기출 데이터베이스 (핵심)
     // ----------------------------------------------------
     const quizData = [
       {
         id: 1,
         chapter: "CH1",
-        chapterName: "제1장 산업재해예방",
+        chapterName: "제1장 산업재해예방 계획 수립",
         question: "산업안전보건법령상 규정된 '중대재해' 기준에 해당하지 않는 것은?",
         options: [
           "사망자가 1명 이상 발생한 재해",
@@ -172,13 +187,13 @@
           "6개월 이상의 요양이 필요한 부상자가 1명 발생한 재해"
         ],
         answer: 3,
-        explanation: "중대재해 기준: ①사망자 1명 이상 발생 ②3개월 이상 요양 부상자가 동시에 2명 이상 ③부상자 또는 직업성 질병자가 동시에 10명 이상 발생한 재해입니다."
+        explanation: "중대재해 기준: ① 사망자 1명 이상 발생 ② 3개월 이상 요양 부상자 동시 2명 이상 발생 ③ 부상자 또는 직업성 질병자 동시 10명 이상 발생."
       },
       {
         id: 2,
         chapter: "CH1",
-        chapterName: "제1장 산업재해예방",
-        question: "하인리히(Heinrich)의 사고발생 5단계(도미노 이론) 중 직접 원인에 해당하여 재해예방 시 가장 핵심적으로 제거해야 할 단계는?",
+        chapterName: "제1장 산업재해예방 계획 수립",
+        question: "하인리히(Heinrich)의 도미노 이론 중 재해 예방 시 가장 핵심적으로 제거해야 할 단계(직접 원인)는?",
         options: [
           "1단계: 사회적 환경 및 유전적 요소",
           "2단계: 개인적 결함",
@@ -186,39 +201,39 @@
           "4단계: 사고"
         ],
         answer: 2,
-        explanation: "하인리히 도미노 이론의 3단계는 '불안전한 행동 및 불안전한 상태(직접 원인)'이며, 이를 제거하는 것이 재해예방에 가장 효과적입니다."
+        explanation: "하인리히는 3단계인 불안전한 행동 및 불안전한 상태(직접 원인)를 제거하면 사고와 재해로 연쇄반응이 이어지지 않는다고 보았습니다."
       },
       {
         id: 3,
         chapter: "CH1",
-        chapterName: "제1장 산업재해예방",
-        question: "버드(Bird)의 신도미노 이론 및 재해구성비율(1:10:30:600)에서 '30'이 의미하는 것은?",
+        chapterName: "제1장 산업재해예방 계획 수립",
+        question: "버드(Bird)의 재해구성비율(1:10:30:600)에서 '30'이 의미하는 것은?",
         options: [
           "중상 또는 사망",
           "경상(물적, 인적 상해)",
           "무상해사고(물적 손실 발생)",
-          "무상해·무사고 고장(위험 순간)"
+          "무상해, 무사고 고장(위험 순간)"
         ],
         answer: 2,
-        explanation: "버드의 법칙 1:10:30:600에서 1은 중상(중증요양), 10은 경상, 30은 무상해사고(물적 손실), 600은 무상해·무사고 고장(위험 순간)입니다."
+        explanation: "버드의 법칙 1:10:30:600에서 1은 중상, 10은 경상, 30은 무상해사고(물적 손실), 600은 무상해·무사고 고장(아차사고)입니다."
       },
       {
         id: 4,
         chapter: "CH2",
         chapterName: "제2장 안전보호구 관리",
-        question: "물체의 낙하·비래 및 추락 위험을 방지하고, 머리부위 감전(7,000V 이하 전압 견딤) 위험까지 동시에 방지하는 안전모 등급 기호는?",
+        question: "물체의 낙하·비래 및 추락 방지뿐만 아니라 머리부위 감전(내전압성 7,000V 이하) 방지까지 모두 충족하는 안전모 기호는?",
         options: ["AB", "AE", "ABE", "EB"],
         answer: 2,
-        explanation: "ABE종 안전모가 물체의 낙하/비래, 추락, 감전 방지 기능을 모두 가집니다. (AB: 낙하·비래·추락 / AE: 낙하·비래·감전)"
+        explanation: "ABE종 안전모가 낙하·비래, 추락, 감전 방지 기능을 모두 가집니다. (AB: 낙하/비래/추락, AE: 낙하/비래/감전)"
       },
       {
         id: 5,
         chapter: "CH2",
         chapterName: "제2장 안전보호구 관리",
-        question: "산업안전보건법령상 방독마스크 정화통 외부 측면의 표시색 중 '암모니아용' 정화통의 규격 색상은?",
+        question: "산업안전보건법령상 방독마스크 정화통 외부 측면의 표시색 중 '암모니아용' 정화통의 색상은?",
         options: ["갈색", "회색", "노란색", "녹색"],
         answer: 3,
-        explanation: "암모니아용은 녹색, 유기화합물용은 갈색, 할로겐/황화수소/시안화수소용은 회색, 아황산용은 노란색입니다."
+        explanation: "유기화합물용은 갈색, 할로겐/황화수소/시안화수소용은 회색, 아황산용은 노란색, 암모니아용은 녹색입니다."
       },
       {
         id: 6,
@@ -231,161 +246,794 @@
       },
       {
         id: 7,
-        chapter: "CH4",
-        chapterName: "제4장 인간의 행동과학",
-        question: "인간 의식 레벨(Phase) 중 '적극활동 시' 나타나며 신뢰성이 0.99999 이상인 가장 명료하고 전향적인(Active) 상태는?",
-        options: ["Phase I", "Phase II", "Phase III", "Phase IV"],
-        answer: 2,
-        explanation: "Phase III은 가장 명료한 전향적 상태로 신뢰성이 0.99999 이상입니다. (Phase 0: 수면/무의식, Phase I: 피로/의식둔화, Phase II: 휴식/이완, Phase IV: 당황/과긴장)"
+        chapter: "CH3",
+        chapterName: "제3장 산업안전심리",
+        question: "암실 내에서 정지된 작은 빛을 응시하고 있을 때 그 빛이 움직이는 것처럼 느껴지는 착각현상은?",
+        options: ["유도운동", "자동운동", "가현운동", "착시현상"],
+        answer: 1,
+        explanation: "암실에서 정지된 미소 광점을 볼 때 움직여 보이는 현상은 '자동운동'입니다. 기준의 이동에 의해 유도되는 것은 유도운동입니다."
       },
       {
         id: 8,
         chapter: "CH4",
         chapterName: "제4장 인간의 행동과학",
-        question: "인간의 생체리듬(바이오리듬) 중 기억력, 판단력 등과 관련되며 '33일 주기'를 가지는 리듬은?",
-        options: [
-          "육체적 리듬 (P)",
-          "감성적 리듬 (S)",
-          "지성적 리듬 (I)",
-          "안정적 리듬 (A)"
-        ],
+        question: "인간 의식 레벨(Phase) 중 '적극활동 시' 나타나며 신뢰성이 0.99999 이상인 가장 명료한 전향적(Active) 상태는?",
+        options: ["Phase I", "Phase II", "Phase III", "Phase IV"],
         answer: 2,
-        explanation: "지성적 리듬(I)은 33일 주기(녹색), 육체적 리듬(P)은 23일 주기(청색), 감성적 리듬(S)은 28일 주기(적색)입니다."
+        explanation: "Phase III은 명료한 상태로 적극 활동 시 나타나며 신뢰성이 0.99999 이상입니다. (Phase IV는 과긴장/패닉으로 신뢰성 0.9 이하)"
       },
       {
         id: 9,
+        chapter: "CH4",
+        chapterName: "제4장 인간의 행동과학",
+        question: "인간의 생체리듬(바이오리듬) 중 기억력, 인지력, 판단력 등을 나타내며 '33일'의 주기를 갖는 것은?",
+        options: ["육체적 리듬(P)", "감성적 리듬(S)", "지성적 리듬(I)", "안정적 리듬(A)"],
+        answer: 2,
+        explanation: "지성적 리듬(I)은 33일 주기(녹색 일점쇄선), 육체적 리듬(P)은 23일 주기(청색 실선), 감성적 리듬(S)은 28일 주기(적색 점선)입니다."
+      },
+      {
+        id: 10,
         chapter: "CH5",
-        chapterName: "제5장 안전보건교육",
+        chapterName: "제5장 안전보건교육의 내용 및 방법",
         question: "관리감독자를 대상으로 하는 TWI(Training Within Industry)의 4대 교육훈련 과정에 해당하지 않는 것은?",
         options: [
-          "작업지도훈련 (JIT)",
-          "작업방법훈련 (JMT)",
-          "인간관계훈련 (JRT)",
-          "작업환경측정훈련 (JET)"
+          "작업지도훈련(JIT)",
+          "작업방법훈련(JMT)",
+          "인간관계훈련(JRT)",
+          "작업환경측정훈련(JET)"
         ],
         answer: 3,
-        explanation: "TWI의 4대 과정은 ①작업지도훈련(JIT), ②작업방법훈련(JMT), ③인간관계훈련(JRT), ④작업안전훈련(JST)입니다."
+        explanation: "TWI 4대 과정: ① 작업지도훈련(JIT), ② 작업방법훈련(JMT), ③ 인간관계훈련(JRT), ④ 작업안전훈련(JST)."
       }
     ];
 
     // ----------------------------------------------------
-    // [2] OX 스피드 퀴즈 데이터베이스
+    // [2] 각 장당 10개씩 총 50개 OX 스피드 퀴즈 데이터
     // ----------------------------------------------------
     const oxData = [
+      // CHAPTER 01 (10개)
       {
+        chapterId: "CH1",
         chapter: "1장 산업재해예방",
-        statement: "하인리히의 법칙(1:29:300)에서 '300'은 중대사고를 의미한다.",
-        answer: "X",
-        desc: "하인리히 1:29:300에서 1은 중상/사망, 29는 경상, 300은 상해가 발생하지 않은 '무상해사고'입니다."
+        statement: "산업안전보건법상 사망자가 1명 이상 발생한 재해는 '중대재해'에 해당한다.",
+        answer: "O",
+        desc: "사망자 1명 이상 발생 시 법적으로 중대재해에 해당합니다."
       },
       {
+        chapterId: "CH1",
         chapter: "1장 산업재해예방",
-        statement: "안전보건진단은 법적 효력이 있는 강제 규정이다.",
+        statement: "하인리히의 법칙(1:29:300)에서 '300'은 중대 재해건수를 의미한다.",
         answer: "X",
-        desc: "KOSHA GUIDE 및 기술지원규정은 권고 지침으로서 법적 구속력이 없습니다."
+        desc: "하인리히 법칙에서 300은 인적·물적 피해가 없는 '무상해사고'를 의미합니다."
       },
       {
-        chapter: "2장 안전보호구 관리",
-        statement: "안전모의 성능시험 중 '충격흡수성' 기준은 최고전달충격력이 4,450N을 초과해서는 안 된다.",
+        chapterId: "CH1",
+        chapter: "1장 산업재해예방",
+        statement: "하인리히의 도미노 이론에서 직접 원인은 '개인적 결함'이다.",
+        answer: "X",
+        desc: "하인리히 도미노에서 개인적 결함은 2단계(간접원인)이며, 3단계인 '불안전한 행동 및 불안전한 상태'가 직접원인입니다."
+      },
+      {
+        chapterId: "CH1",
+        chapter: "1장 산업재해예방",
+        statement: "버드(Bird)의 신도미노 이론 1단계는 '통제의 부족(관리소홀)'이다.",
         answer: "O",
-        desc: "안전모 시험 시 최고전달충격력은 4,450[N] 이하이어야 적합합니다."
+        desc: "버드 이론은 1단계: 통제부족(관리소홀) ➔ 2단계: 기본원인 ➔ 3단계: 직접원인 ➔ 4단계: 사고 ➔ 5단계: 상해(손해) 순입니다."
       },
       {
-        chapter: "2장 안전보호구 관리",
-        statement: "방독마스크 정화통 중 갈색 표시는 '유기화합물용'이다.",
+        chapterId: "CH1",
+        chapter: "1장 산업재해예방",
+        statement: "재해예방의 4원칙 중 '재해발생에는 반드시 원인이 있다'는 것은 원인계기의 원칙이다.",
         answer: "O",
-        desc: "유기화합물용 정화통 표시는 갈색이 맞습니다."
+        desc: "재해예방 4원칙: 예방가능, 손실우연, 원인계기(연계), 대책선정의 원칙입니다."
       },
       {
+        chapterId: "CH1",
+        chapter: "1장 산업재해예방",
+        statement: "하비(Harvey)의 재해원인 대책 3E 기법은 기술(Engineering), 교육(Education), 관리(Enforcement)이다.",
+        answer: "O",
+        desc: "하비의 3E는 Engineering(기술적), Education(교육적), Enforcement(관리적·강제적) 측면입니다."
+      },
+      {
+        chapterId: "CH1",
+        chapter: "1장 산업재해예방",
+        statement: "무재해 운동의 3원칙은 무의 원칙, 참여의 원칙, 사후수습의 원칙이다.",
+        answer: "X",
+        desc: "무재해 운동 3원칙은 '무의 원칙', '참여(참가)의 원칙', '안전제일(선취)의 원칙'입니다."
+      },
+      {
+        chapterId: "CH1",
+        chapter: "1장 산업재해예방",
+        statement: "TBM(Tool Box Meeting)은 보통 10명 이하의 작업자가 모여 10분 내외로 단시간에 진행한다.",
+        answer: "O",
+        desc: "TBM은 작업 개시 전/종료 후 현장에서 10명 이하 작업원이 10분 내외로 진행하는 안전 회의 기법입니다."
+      },
+      {
+        chapterId: "CH1",
+        chapter: "1장 산업재해예방",
+        statement: "KOSHA GUIDE(기술지원규정)는 위반 시 법적 처벌을 받는 법적 구속력을 가진다.",
+        answer: "X",
+        desc: "KOSHA GUIDE는 사업장의 자율 예방체계를 지원하는 기술적 권고 지침으로 법적 구속력(효력)은 없습니다."
+      },
+      {
+        chapterId: "CH1",
+        chapter: "1장 산업재해예방",
+        statement: "라인(Line)형 안전조직은 1,000명 이상의 대규모 사업장에 가장 이상적인 조직 형태이다.",
+        answer: "X",
+        desc: "라인형은 100명 미만의 소규모 사업장에 적합합니다. 1,000명 이상 대규모에는 라인·스태프형이 적합합니다."
+      },
+
+      // CHAPTER 02 (10개)
+      {
+        chapterId: "CH2",
+        chapter: "2장 안전보호구 관리",
+        statement: "보호구는 설비 개선이나 작업환경 개선보다 최우선적으로 적용해야 하는 근원적 안전 대책이다.",
+        answer: "X",
+        desc: "보호구는 어디까지나 보조수단으로 사용함을 원칙으로 하며, 기계·환경 개선을 우선해야 합니다."
+      },
+      {
+        chapterId: "CH2",
+        chapter: "2장 안전보호구 관리",
+        statement: "ABE종 안전모는 낙하·비래, 추락 방지뿐만 아니라 7,000V 이하의 전압에 견디는 내전압성을 갖는다.",
+        answer: "O",
+        desc: "ABE종은 낙하/비래, 추락, 감전 방지 성능을 모두 갖춘 안전모입니다."
+      },
+      {
+        chapterId: "CH2",
+        chapter: "2장 안전보호구 관리",
+        statement: "안전모의 성능시험에서 최고전달충격력은 4,450N을 초과해서는 안 된다.",
+        answer: "O",
+        desc: "충격흡수성 시험 기준에 따라 최고전달충격력은 4,450[N] 이하이어야 합니다."
+      },
+      {
+        chapterId: "CH2",
+        chapter: "2장 안전보호구 관리",
+        statement: "배기밸브가 없는 안면부 여과식 방진마스크는 특급 및 1급 장소에 사용할 수 있다.",
+        answer: "X",
+        desc: "배기밸브가 없는 안면부 여과식 마스크는 특급 및 1급 장소에 사용하여서는 안 됩니다."
+      },
+      {
+        chapterId: "CH2",
+        chapter: "2장 안전보호구 관리",
+        statement: "방독마스크는 산소농도가 18% 이상인 장소에서만 사용하여야 한다.",
+        answer: "O",
+        desc: "산소농도 18% 미만인 산소결핍 장소에서는 방독마스크가 아닌 송기마스크나 공기호흡기를 사용해야 합니다."
+      },
+      {
+        chapterId: "CH2",
+        chapter: "2장 안전보호구 관리",
+        statement: "방독마스크 정화통 외부 측면 표시색 중 유기화합물용은 '갈색'이다.",
+        answer: "O",
+        desc: "유기화합물용 정화통 표시는 갈색입니다."
+      },
+      {
+        chapterId: "CH2",
+        chapter: "2장 안전보호구 관리",
+        statement: "방독마스크 정화통 외부 측면 표시색 중 암모니아용은 '노란색'이다.",
+        answer: "X",
+        desc: "암모니아용은 녹색이며, 노란색은 아황산용 정화통입니다."
+      },
+      {
+        chapterId: "CH2",
+        chapter: "2장 안전보호구 관리",
+        statement: "안전보건표지에서 파란색(2.5PB 4/10)은 보호구 착용과 같은 '지시' 표지에 사용된다.",
+        answer: "O",
+        desc: "파란색은 특정 행위의 지시 및 사실의 고지에 쓰입니다."
+      },
+      {
+        chapterId: "CH2",
+        chapter: "2장 안전보호구 관리",
+        statement: "안전보건표지 제작 시 그림 또는 부호의 크기는 표지 전체 규격의 30% 이상이어야 한다.",
+        answer: "O",
+        desc: "산업안전보건법 시행규칙 제40조에 따라 그림이나 부호는 전체 규격의 30% 이상이어야 합니다."
+      },
+      {
+        chapterId: "CH2",
+        chapter: "2장 안전보호구 관리",
+        statement: "비상구 및 피난소, 통행표지를 나타내는 '안내표지'의 바탕색은 파란색이다.",
+        answer: "X",
+        desc: "안내표지의 바탕색은 흰색(부호 녹색) 또는 녹색(부호 흰색)입니다."
+      },
+
+      // CHAPTER 03 (10개)
+      {
+        chapterId: "CH3",
         chapter: "3장 산업안전심리",
-        statement: "암실에서 정지된 작은 빛을 계속 응시할 때 빛이 움직이는 것처럼 보이는 현상은 '유도운동'이다.",
-        answer: "X",
-        desc: "암실 내 정지된 미소 광점이 움직여 보이는 현상은 '자동운동'입니다."
-      },
-      {
-        chapter: "4장 인간의 행동과학",
-        statement: "매슬로우의 욕구위계이론에서 1단계 욕구는 '생리적 욕구'이다.",
+        statement: "심리검사의 구비조건 중 '검사 점수들이 조건이나 시기에 관계없이 일관성이 있는가'는 신뢰성을 뜻한다.",
         answer: "O",
-        desc: "생리적 → 안전 → 사회적 → 자기존경 → 자아실현 욕구 순서입니다."
+        desc: "검사 결과의 일관성은 '신뢰성'이며, 측정하고자 하는 대상을 정확히 측정했는가는 '타당성'입니다."
       },
       {
-        chapter: "4장 인간의 행동과학",
-        statement: "맥그리거의 Y이론은 인간을 기본적으로 일하기 싫어하고 통제해야 할 대상으로 본다.",
+        chapterId: "CH3",
+        chapter: "3장 산업안전심리",
+        statement: "GATB는 성격과 흥미를 측정하는 대표적인 정서적 검사이다.",
         answer: "X",
-        desc: "인간을 일하기 싫어하는 존재로 보는 것은 X이론이며, 자발적/자기통제적 존재로 보는 것은 Y이론입니다."
+        desc: "GATB(일반적성검사)는 능력/적성을 측정하는 '인지적 검사'입니다."
       },
       {
+        chapterId: "CH3",
+        chapter: "3장 산업안전심리",
+        statement: "스트레스의 외적 요인에는 자존심 손상과 업무상 죄책감이 포함된다.",
+        answer: "X",
+        desc: "자존심 손상, 업무상 죄책감은 내적 요인이며, 가족 문제, 경제적 곤란, 대인갈등 등은 외적 요인입니다."
+      },
+      {
+        chapterId: "CH3",
+        chapter: "3장 산업안전심리",
+        statement: "불안전행동의 간접원인 중 '의식의 우회'는 공상이나 회상 등으로 집중이 분산되는 것을 말한다.",
+        answer: "O",
+        desc: "의식의 우회는 다른 생각(공상, 잡념 등)에 빠져 위험에 대응하지 못하는 상태입니다."
+      },
+      {
+        chapterId: "CH3",
+        chapter: "3장 산업안전심리",
+        statement: "산업안전심리의 5대 요소는 동기, 기질, 감정, 습성, 습관이다.",
+        answer: "O",
+        desc: "산업안전심리의 요소는 동기(Motive), 기질(Temper), 감정(Emotion), 습성(Habits), 습관(Custom)입니다."
+      },
+      {
+        chapterId: "CH3",
+        chapter: "3장 산업안전심리",
+        statement: "암실 내에서 정지된 작은 빛을 응시할 때 빛이 움직이는 것처럼 보이는 현상은 '유도운동'이다.",
+        answer: "X",
+        desc: "정지된 미소 광점이 스스로 움직여 보이는 착각현상은 '자동운동'입니다."
+      },
+      {
+        chapterId: "CH3",
+        chapter: "3장 산업안전심리",
+        statement: "구름 사이에 떠 있는 달을 볼 때 구름이 아니라 달이 움직이는 것처럼 느껴지는 것은 유도운동의 예이다.",
+        answer: "O",
+        desc: "실제 움직이는 기준(구름)에 유도되어 정지된 물체(달)가 움직이는 것처럼 보이는 현상이 유도운동입니다."
+      },
+      {
+        chapterId: "CH3",
+        chapter: "3장 산업안전심리",
+        statement: "영화나 애니메이션처럼 정지된 대상물이 급속히 점멸하여 움직이는 것처럼 인식되는 것은 가현운동(β운동)이다.",
+        answer: "O",
+        desc: "정지 영상의 빠른 교체로 움직임을 느끼는 현상은 가현운동입니다."
+      },
+      {
+        chapterId: "CH3",
+        chapter: "3장 산업안전심리",
+        statement: "작업자가 '과거에도 이렇게 해서 사고가 안 났으니 괜찮겠지'라고 생각하는 것은 억측판단 요인이다.",
+        answer: "O",
+        desc: "희망적 관측과 과거의 성공 경험 선입관은 억측판단의 대표적인 배경입니다."
+      },
+      {
+        chapterId: "CH3",
+        chapter: "3장 산업안전심리",
+        statement: "기억의 4단계 순서는 '재인 ➔ 재생 ➔ 파지 ➔ 기명'이다.",
+        answer: "X",
+        desc: "기억의 4단계는 '기명(마음에 새김) ➔ 파지(보존) ➔ 재생(떠올림) ➔ 재인(알아봄)' 순입니다."
+      },
+
+      // CHAPTER 04 (10개)
+      {
+        chapterId: "CH4",
+        chapter: "4장 인간의 행동과학",
+        statement: "호손(Hawthorne)의 실험 결과 물리적 작업환경보다 근로자의 인간관계가 생산성에 결정적 영향을 미침이 밝혀졌다.",
+        answer: "O",
+        desc: "호손 실험은 인간관계, 사기, 관심이 물리적 조건보다 생산성에 더 큰 영향을 미친다는 것을 입증했습니다."
+      },
+      {
+        chapterId: "CH4",
+        chapter: "4장 인간의 행동과학",
+        statement: "의식 레벨 Phase III은 적극 활동 시 나타나며 신뢰성이 0.99999 이상인 명료한 상태이다.",
+        answer: "O",
+        desc: "Phase III은 전향적(Active)이고 가장 신뢰성이 높은 상태입니다."
+      },
+      {
+        chapterId: "CH4",
+        chapter: "4장 인간의 행동과학",
+        statement: "의식 레벨 Phase IV는 과긴장 상태로 신뢰성이 0.9 이하로 급격히 저하된다.",
+        answer: "O",
+        desc: "Phase IV는 공포, 패닉, 당황 상태로 주의가 한곳에만 쏠려 판단이 정지됩니다."
+      },
+      {
+        chapterId: "CH4",
+        chapter: "4장 인간의 행동과학",
+        statement: "자신의 결점이나 억압된 욕구를 다른 사람의 것으로 전가하는 방어기제는 '투사(Projection)'이다.",
+        answer: "O",
+        desc: "남의 탓으로 돌리는 심리 메커니즘을 '투사'라고 합니다."
+      },
+      {
+        chapterId: "CH4",
+        chapter: "4장 인간의 행동과학",
+        statement: "쿠르트 레윈(Lewin)의 법칙 공식은 B = f(P · E) 로 표현된다.",
+        answer: "O",
+        desc: "인간의 행동(B)은 개체(P)와 환경(E)의 상호작용 함수(f)라는 법칙입니다."
+      },
+      {
+        chapterId: "CH4",
+        chapter: "4장 인간의 행동과학",
+        statement: "매슬로우(Maslow) 욕구위계이론의 최상위 5단계 욕구는 '자기존경의 욕구'이다.",
+        answer: "X",
+        desc: "최상위 5단계는 '자아실현의 욕구'입니다. (생리 ➔ 안전 ➔ 사회적 ➔ 존경 ➔ 자아실현)"
+      },
+      {
+        chapterId: "CH4",
+        chapter: "4장 인간의 행동과학",
+        statement: "맥그리거의 X이론은 근로자에게 민주적 리더십과 권한 위임을 적용하는 것을 강조한다.",
+        answer: "X",
+        desc: "민주적 리더십과 권한 위임은 Y이론의 관리 전략이며, X이론은 명령, 통제, 처벌을 강조합니다."
+      },
+      {
+        chapterId: "CH4",
+        chapter: "4장 인간의 행동과학",
+        statement: "허즈버그의 2요인 이론에서 급여와 작업조건은 만족도를 직접 높여주는 '동기요인'이다.",
+        answer: "X",
+        desc: "급여, 작업조건은 불만을 없애주는 '위생요인'이며, 성취감, 인정, 책임감이 '동기요인'입니다."
+      },
+      {
+        chapterId: "CH4",
+        chapter: "4장 인간의 행동과학",
+        statement: "생체리듬 중 감성적 리듬(S)의 주기는 28일이다.",
+        answer: "O",
+        desc: "육체적(P) 23일, 감성적(S) 28일, 지성적(I) 33일 주기입니다."
+      },
+      {
+        chapterId: "CH4",
+        chapter: "4장 인간의 행동과학",
+        statement: "관리 그리드 이론에서 생산과 인간에 대한 관심이 모두 가장 높은 이상적인 유형은 '9,9형'이다.",
+        answer: "O",
+        desc: "9,9형은 이상형(팀형) 리더입니다. (1,1: 무관심형, 1,9: 인기형, 9,1: 과업형, 5,5: 타협형)"
+      },
+
+      // CHAPTER 05 (10개)
+      {
+        chapterId: "CH5",
         chapter: "5장 안전보건교육",
-        statement: "안전교육의 3단계 순서는 '지식교육 ➔ 기능교육 ➔ 태도교육'이다.",
+        statement: "학습지도 원리 중 학습자 각자의 능력과 요구에 맞게 개별적으로 지도해야 한다는 것은 개별화의 원리이다.",
         answer: "O",
-        desc: "1단계 지식전달, 2단계 실습을 통한 기능습득, 3단계 습관화를 위한 태도교육 순으로 진행됩니다."
+        desc: "개별화의 원리는 학습자 개인차를 고려하여 지도해야 한다는 원칙입니다."
+      },
+      {
+        chapterId: "CH5",
+        chapter: "5장 안전보건교육",
+        statement: "손다이크(Thorndike)의 시행착오설의 3법칙은 준비성의 법칙, 연습의 법칙, 효과의 법칙이다.",
+        answer: "O",
+        desc: "손다이크의 3대 학습법칙은 준비성, 연습, 효과의 법칙입니다."
+      },
+      {
+        chapterId: "CH5",
+        chapter: "5장 안전보건교육",
+        statement: "파블로프의 조건반사설에서 조건자극은 무조건자극보다 한참 뒤에 주어야 강화가 잘 된다.",
+        answer: "X",
+        desc: "시간의 원리에 따라 조건자극은 무조건자극보다 조금 앞서거나 동시에 주어야 강화가 일어납니다."
+      },
+      {
+        chapterId: "CH5",
+        chapter: "5장 안전보건교육",
+        statement: "에빙하우스의 망각곡선에 따르면 학습 후 1시간만 지나도 절반 이상(약 56%)이 망각된다.",
+        answer: "O",
+        desc: "에빙하우스에 따르면 학습 직후부터 급격히 망각되어 1시간 후에는 약 44%만 기억(56% 망각)됩니다."
+      },
+      {
+        chapterId: "CH5",
+        chapter: "5장 안전보건교육",
+        statement: "OJT(직장 내 훈련)는 직속상사가 업무 현장에서 직접 개별 지도를 수행하는 방식이다.",
+        answer: "O",
+        desc: "OJT(On the Job Training)는 상사가 직장 내에서 개별 근로자에게 실무를 직접 훈련하는 방식입니다."
+      },
+      {
+        chapterId: "CH5",
+        chapter: "5장 안전보건교육",
+        statement: "Off JT(직장 외 훈련)는 다수의 인원에게 체계적이고 조직적인 집합 교육을 하기에 적합하다.",
+        answer: "O",
+        desc: "Off JT는 외부 전문강사나 특별 교재를 활용해 많은 인원을 집중 교육할 때 적합합니다."
+      },
+      {
+        chapterId: "CH5",
+        chapter: "5장 안전보건교육",
+        statement: "안전교육의 3단계는 '기능교육 ➔ 지식교육 ➔ 태도교육' 순으로 진행된다.",
+        answer: "X",
+        desc: "안전교육의 3단계는 1단계: 지식교육 ➔ 2단계: 기능교육 ➔ 3단계: 태도교육 순입니다."
+      },
+      {
+        chapterId: "CH5",
+        chapter: "5장 안전보건교육",
+        statement: "교수법 4단계 중 작업을 설명하고 내용을 이해시키는 단계는 2단계인 '제시' 단계이다.",
+        answer: "O",
+        desc: "1단계: 도입 ➔ 2단계: 제시(설명) ➔ 3단계: 적용(실습) ➔ 4단계: 확인(평가)입니다."
+      },
+      {
+        chapterId: "CH5",
+        chapter: "5장 안전보건교육",
+        statement: "버즈세션(Buzz Session)은 6명의 소집단이 6분간 자유토론을 진행하는 6-6 회의 방식이다.",
+        answer: "O",
+        desc: "버즈세션은 6명으로 구성된 소집단이 각자 6분간 토의하여 전체 의견을 수렴하는 방식입니다."
+      },
+      {
+        chapterId: "CH5",
+        chapter: "5장 안전보건교육",
+        statement: "안전보건교육계획을 수립할 때 가장 최우선적으로 고려해야 할 사항은 교육장소의 위치이다.",
+        answer: "X",
+        desc: "안전교육계획 수립 시 가장 먼저 고려해야 할 제1요소는 '교육대상'입니다."
       }
     ];
 
     // ----------------------------------------------------
-    // [3] 포켓 요약노트 데이터베이스
+    // [3] 포켓 요약노트 (제공된 이론 본문 전체 총망라 데이터)
     // ----------------------------------------------------
     const summaryNotes = [
+      // CHAPTER 01
       {
-        title: "중대재해 기준 (산안법)",
-        tags: ["중대재해", "사망자", "1명", "3개월", "10명"],
-        body: "1. 사망자 1명 이상 발생<br>2. 3개월 이상 요양 부상자 동시 2명 이상<br>3. 부상자 또는 직업성 질병자 동시 10명 이상"
+        chapter: "CH1",
+        chapterName: "제1장 산업재해예방",
+        title: "1. 주요 법적 용어 정의",
+        tags: ["산업재해", "근로자", "사업주", "작업환경측정", "안전보건진단", "아차사고"],
+        body: `• <b>산업재해</b>: 노무를 제공하는 자가 건설물·설비·원재료·가스·작업 등으로 인해 사망, 부상, 질병에 걸리는 것<br>
+• <b>근로자</b>: 직업 종류 불문 임금을 목적으로 근로를 제공하는 자<br>
+• <b>작업환경측정</b>: 작업장 실태 파악을 위해 유해인자 시료 채취, 분석, 평가<br>
+• <b>사건(Event)</b>: 사고로 이어질 뻔했던 손실 없는 '아차사고(Near Miss)'를 포함하는 개념<br>
+• <b>사고(Accident)</b>: 불안전 행동과 상태로 인한 재산 손실 발생 사건`
       },
       {
-        title: "재해 구성 비율 공식",
-        tags: ["하인리히", "버드", "1:29:300", "1:10:30:600"],
-        body: "<b>하인리히 (1:29:300)</b>: 중상 1 : 경상 29 : 무상해사고 300<br><b>버드 (1:10:30:600)</b>: 중상 1 : 경상 10 : 무상해(물적) 30 : 아차사고 600"
+        chapter: "CH1",
+        chapterName: "제1장 산업재해예방",
+        title: "2. 중대재해의 범위 (산업안전보건법 시행규칙 제3조)",
+        tags: ["중대재해", "사망자", "3개월", "부상자", "10명", "직업성질병"],
+        body: `다음 중 어느 하나에 해당하는 재해:<br>
+1. <b>사망자가 1명 이상</b> 발생한 재해<br>
+2. <b>3개월 이상 요양</b>이 필요한 부상자가 <b>동시에 2명 이상</b> 발생한 재해<br>
+3. 부상자 또는 직업성 질병자가 <b>동시에 10명 이상</b> 발생한 재해`
       },
       {
-        title: "안전모 구분 & 성능 기준",
-        tags: ["안전모", "AB", "AE", "ABE", "4450N", "7000V"],
-        body: "<b>AB</b>: 낙하·비래 + 추락 방지<br><b>AE</b>: 낙하·비래 + 머리 감전 방지<br><b>ABE</b>: 낙하·비래 + 추락 + 머리 감전(7000V 이하)<br>• 충격흡수성: 최고전달충격력 <b>4,450N 이하</b>"
+        chapter: "CH1",
+        chapterName: "제1장 산업재해예방",
+        title: "3. 재해발생 메커니즘 이론 비교",
+        tags: ["하인리히", "버드", "아담스", "도미노", "직접원인", "통제부족"],
+        body: `• <b>하인리히 도미노 이론</b>:<br>
+  1단계(사회적환경·유전) ➔ 2단계(개인적결함) ➔ <b>3단계(불안전행동/상태 - 직접원인)</b> ➔ 4단계(사고) ➔ 5단계(재해)<br>
+  👉 <i>3단계를 제거하면 사고와 재해로 연결되지 않음!</i><br>
+• <b>버드(Bird) 신도미노 이론</b>:<br>
+  1단계(통제부족-근원요인) ➔ 2단계(기본원인) ➔ 3단계(직접원인-징후) ➔ 4단계(사고-접촉) ➔ 5단계(상해/손해)<br>
+• <b>아담스(Adams) 사고연쇄반응</b>:<br>
+  관리구조결함 ➔ 작전적에러(관리자) ➔ 전술적에러(작업자) ➔ 사고 ➔ 상해/손해`
       },
       {
-        title: "방독마스크 정화통 측면 표시색",
-        tags: ["정화통", "색상", "갈색", "회색", "노란색", "녹색"],
-        body: "• <b>갈색</b>: 유기화합물용<br>• <b>회색</b>: 할로겐, 황화수소, 시안화수소용<br>• <b>노란색</b>: 아황산용<br>• <b>녹색</b>: 암모니아용"
+        chapter: "CH1",
+        chapterName: "제1장 산업재해예방",
+        title: "4. 재해예방의 4원칙 (하인리히)",
+        tags: ["4원칙", "손실우연", "원인계기", "예방가능", "대책선정"],
+        body: `1. <b>손실우연의 원칙</b>: 재해 손실의 유무나 크기는 사고 시 조건에 따라 우연히 결정된다.<br>
+2. <b>원인계기(연계)의 원칙</b>: 재해 발생에는 반드시 직접·간접의 원인이 존재한다.<br>
+3. <b>예방가능의 원칙</b>: 원인만 제거하면 재해는 원칙적으로 예방이 가능하다.<br>
+4. <b>대책선정의 원칙</b>: 재해예방을 위한 기술적·안전 대책은 반드시 존재한다.`
       },
       {
-        title: "안전보건표지 색채 기준",
-        tags: ["표지", "빨간색", "노란색", "파란색", "녹색"],
-        body: "• <b>빨간색(7.5R 4/14)</b>: 금지, 화학물질 경고<br>• <b>노란색(5Y 8.5/12)</b>: 경고(주의/기계방호물)<br>• <b>파란색(2.5PB 4/10)</b>: 지시(보호구 착용)<br>• <b>녹색(2.5G 4/10)</b>: 안내(비상구, 구호)"
+        chapter: "CH1",
+        chapterName: "제1장 산업재해예방",
+        title: "5. 재해구성비율 법칙 (하인리히 vs 버드)",
+        tags: ["1:29:300", "1:10:30:600", "무상해", "경상", "중상", "330"],
+        body: `• <b>하인리히 법칙 (1 : 29 : 300)</b><br>
+  - <b>1</b>: 중상 또는 사망 (1건)<br>
+  - <b>29</b>: 경상 (29건)<br>
+  - <b>300</b>: 무상해 사고 (300건) ➔ 총 330회<br>
+• <b>버드 법칙 (1 : 10 : 30 : 600)</b><br>
+  - <b>1</b>: 중상(중증요양) 또는 사망<br>
+  - <b>10</b>: 경상 (인적·물적 상해)<br>
+  - <b>30</b>: 무상해사고 (물적 손실 발생)<br>
+  - <b>600</b>: 무상해·무사고 고장 (위험순간/아차사고)`
       },
       {
-        title: "인간 의식 수준 (Phase 레벨)",
-        tags: ["의식", "Phase", "신뢰성", "적극활동"],
-        body: "• <b>Phase 0</b>: 무의식/실신 (신뢰성 0)<br>• <b>Phase I</b>: 피로/의식둔화 (신뢰성 0.9 이하)<br>• <b>Phase II</b>: 휴식/이완 (신뢰성 0.99~0.99999)<br>• <b>Phase III</b>: 명료/적극활동 (신뢰성 <b>0.99999 이상</b>)<br>• <b>Phase IV</b>: 과긴장/패닉 (신뢰성 0.9 이하)"
+        chapter: "CH1",
+        chapterName: "제1장 산업재해예방",
+        title: "6. 재해원인 대책 기법 (3E, 4M, 3S)",
+        tags: ["3E", "4M", "3S", "Engineering", "Man", "Machine"],
+        body: `• <b>하비(Harvey)의 3E 기법</b>: 기술(Engineering), 교육(Education), 관리/규제(Enforcement)<br>
+• <b>4M 분석기법 (휴먼에러 배후요인)</b>:<br>
+  1. Man(인간): 오조작, 착오, 실수, 불안심리<br>
+  2. Machine(기계): 설계착오, 피로/열화, 고장<br>
+  3. Media(작업매체/환경): 정보부족, 환경불량<br>
+  4. Management(관리): 조직미비, 교육부족, 계획불량<br>
+• <b>3S 이론</b>: 단순화(Simplification), 표준화(Standardization), 전문화(Specification)`
       },
       {
-        title: "생체리듬 (바이오리듬) 주기",
-        tags: ["생체리듬", "바이오리듬", "23일", "28일", "33일"],
-        body: "• <b>육체적 리듬 (P)</b>: 23일 주기 (청색 실선)<br>• <b>감성적 리듬 (S)</b>: 28일 주기 (적색 점선)<br>• <b>지성적 리듬 (I)</b>: 33일 주기 (녹색 일점쇄선)"
+        chapter: "CH1",
+        chapterName: "제1장 산업재해예방",
+        title: "7. 무재해 운동 이론 및 TBM 기법",
+        tags: ["무재해", "3원칙", "3기둥", "TBM", "브레인스토밍", "4원칙"],
+        body: `• <b>무재해 3원칙</b>: 무의 원칙, 참여의 원칙, 선취(안전제일)의 원칙<br>
+• <b>무재해 3기둥</b>: 최고경영자의 경영자세, 라인관리자에 의한 추진, 소집단 자주활동 활성화<br>
+• <b>브레인스토밍 4원칙</b>: 비판금지, 자유분방, 대량발언, 수정발언(타인 의견 결합)<br>
+• <b>TBM(Tool Box Meeting)</b>: 10명 이하 소그룹이 작업 전후 10분 내외로 단시간 미팅<br>
+• <b>위험예지훈련 4R</b>: 1R 현상파악 ➔ 2R 본질추구 ➔ 3R 대책수립 ➔ 4R 목표설정`
       },
       {
-        title: "TWI 4대 교육과정",
-        tags: ["TWI", "JIT", "JMT", "JRT", "JST"],
-        body: "• <b>JIT</b>: 작업지도훈련 (Job Instruction)<br>• <b>JMT</b>: 작업방법훈련 (Job Method)<br>• <b>JRT</b>: 인간관계훈련 (Job Relation)<br>• <b>JST</b>: 작업안전훈련 (Job Safety)"
+        chapter: "CH1",
+        chapterName: "제1장 산업재해예방",
+        title: "8. KOSHA GUIDE 및 안전보건조직 형태",
+        tags: ["KOSHA", "라인형", "스태프형", "라인스태프형", "권한"],
+        body: `• <b>KOSHA GUIDE</b>: 사업장 자기규율 예방체계 지원 권고지침 (<b>법적 구속력 없음</b>)<br>
+• <b>안전관리조직 3가지 유형</b>:<br>
+  1. <b>라인형</b>: 100명 미만 소규모. 지시·명령 신속, 기술축적 어려움<br>
+  2. <b>스태프형</b>: 100~1,000명 중규모. 전문기술 축적, 권한 다툼 및 생산라인 마찰<br>
+  3. <b>라인·스태프형</b>: 1,000명 이상 대규모 이상적 조직. 기술지원과 명령계통 조화`
+      },
+      {
+        chapter: "CH1",
+        chapterName: "제1장 산업재해예방",
+        title: "9. 산업안전보건위원회 및 협의체 규정",
+        tags: ["위원회", "근로자위원", "사용자위원", "정기회의", "분기", "협의체"],
+        body: `• <b>구성</b>: 근로자위원과 사용자위원 동수로 구성<br>
+• <b>설치대상</b>: 상시근로자 50인/100인/300인 이상(업종별 상이), 공사금액 120억(토목 150억) 이상<br>
+• <b>회의 소집</b>: 정기회의는 <b>분기마다</b> 소집. 출석 과반수 찬성 의결<br>
+• <b>도급 안전협의체</b>: 도급인 및 수급인 전원 구성, <b>매월 1회 이상</b> 정기회의`
+      },
+      {
+        chapter: "CH1",
+        chapterName: "제1장 산업재해예방",
+        title: "10. 안전보건개선계획 & 유해위험방지계획서",
+        tags: ["개선계획", "60일", "유해위험방지계획서", "300kW", "31m", "50m"],
+        body: `• <b>안전보건개선계획서</b>: 명령 받은 날부터 <b>60일 이내</b> 관할 노동관서 제출<br>
+• <b>유해위험방지계획서 (제조업)</b>: 전기 계약용량 <b>300kW 이상</b> 대상 업종, 작업시작 <b>15일 전까지</b> 공단에 2부 제출<br>
+• <b>유해위험방지계획서 (건설업)</b>: 착공 전날까지 제출<br>
+  - 지상높이 <b>31m 이상</b> 건축물, 연면적 <b>30,000㎡ 이상</b><br>
+  - 최대 지간길이 <b>50m 이상</b> 교량, 터널, 깊이 <b>10m 이상</b> 굴착공사`
+      },
+
+      // CHAPTER 02
+      {
+        chapter: "CH2",
+        chapterName: "제2장 안전보호구 관리",
+        title: "1. 안전모 등급 및 구조 규격",
+        tags: ["안전모", "AB", "AE", "ABE", "4450N", "수직거리", "내관통성"],
+        body: `• <b>종류 구분</b>:<br>
+  - <b>AB</b>: 물체 낙하·비래 및 추락 방지<br>
+  - <b>AE</b>: 물체 낙하·비래 및 머리 감전(내전압 7,000V 이하) 방지<br>
+  - <b>ABE</b>: 낙하·비래 + 추락 + 감전 방지<br>
+• <b>핵심 성능 기준</b>:<br>
+  - 충격흡수성: 최고전달충격력 <b>4,450N 이하</b><br>
+  - 내관통성: AE/ABE는 9.5mm 이하, AB는 11.1mm 이하<br>
+  - 착용높이 85mm 이상, 내부수직거리 25~50mm 미만, 턱끈 폭 10mm 이상`
+      },
+      {
+        chapter: "CH2",
+        chapterName: "제2장 안전보호구 관리",
+        title: "2. 내전압용 절연장갑 등급 및 색상",
+        tags: ["절연장갑", "갈색", "빨간색", "흰색", "노란색", "녹색", "등색"],
+        body: `• <b>00등급 (교류 500V)</b>: 갈색<br>
+• <b>0등급 (교류 1,000V)</b>: 빨간색<br>
+• <b>1등급 (교류 7,500V)</b>: 흰색<br>
+• <b>2등급 (교류 17,000V)</b>: 노란색<br>
+• <b>3등급 (교류 26,500V)</b>: 녹색<br>
+• <b>4등급 (교류 36,000V)</b>: 등색(주황색)`
+      },
+      {
+        chapter: "CH2",
+        chapterName: "제2장 안전보호구 관리",
+        title: "3. 방진마스크 등급 및 포집효율",
+        tags: ["방진마스크", "특급", "1급", "2급", "포집효율", "석면"],
+        body: `• <b>사용 장소</b>:<br>
+  - <b>특급</b>: 베릴륨, 석면 등 독성이 강한 물질 발생장소<br>
+  - <b>1급</b>: 금속흄, 일반 분진 발생장소<br>
+  - <b>2급</b>: 특급·1급 제외 분진 장소<br>
+• <b>분진포집효율 (분리식 / 안면부여과식)</b>:<br>
+  - 특급: <b>99.95% 이상</b> (안면부: 99.0% 이상)<br>
+  - 1급: <b>94.0% 이상</b><br>
+  - 2급: <b>80.0% 이상</b>`
+      },
+      {
+        chapter: "CH2",
+        chapterName: "제2장 안전보호구 관리",
+        title: "4. 방독마스크 정화통 색상 및 가스",
+        tags: ["방독마스크", "정화통", "유기화합물", "할로겐", "암모니아", "아황산"],
+        body: `• <b>유기화합물용</b>: <b>갈색</b> (시험가스: 시클로헥산, 활성탄 흡수제)<br>
+• <b>할로겐, 황화수소, 시안화수소용</b>: <b>회색</b><br>
+• <b>아황산용</b>: <b>노란색</b><br>
+• <b>암모니아용</b>: <b>녹색</b> (시험가스: 암모니아, 큐프라마이트 흡수제)<br>
+• <i>주의: 산소농도 18% 미만 장소에서는 방독마스크 사용 금지</i>`
+      },
+      {
+        chapter: "CH2",
+        chapterName: "제2장 안전보호구 관리",
+        title: "5. 안전보건표지 색채 및 색도기준",
+        tags: ["색채", "색도", "빨간색", "노란색", "파란색", "녹색", "7.5R"],
+        body: `• <b>빨간색 (7.5R 4/14)</b>: <b>금지</b>(정지신호), 화학물질 경고<br>
+• <b>노란색 (5Y 8.5/12)</b>: <b>경고</b>(주의표지, 기계방호물)<br>
+• <b>파란색 (2.5PB 4/10)</b>: <b>지시</b>(보호구 착용)<br>
+• <b>녹색 (2.5G 4/10)</b>: <b>안내</b>(비상구, 구호표지, 피난소)<br>
+• <b>흰색 (N9.5) / 검은색 (N0.5)</b>: 문자 및 보조색`
+      },
+      {
+        chapter: "CH2",
+        chapterName: "제2장 안전보호구 관리",
+        title: "6. 안전보건표지의 종류 및 제작 기준",
+        tags: ["금지표지", "경고표지", "지시표지", "안내표지", "30%"],
+        body: `• <b>금지표지 (8종)</b>: 출입금지, 보행금지, 화기금지 등 (바탕 흰색, 모형 빨강, 부호 검정)<br>
+• <b>경고표지 (15종)</b>: 인화성, 급성독성, 고압전기, 낙하물 등 (바탕 노랑, 모형·부호 검정)<br>
+• <b>지시표지 (9종)</b>: 안전모, 방독마스크, 보안경, 안전화 등 (바탕 파랑, 그림 흰색)<br>
+• <b>안내표지 (8종)</b>: 녹십자, 응급구호, 비상구, 들것 등<br>
+• <b>제작 기준</b>: 표지 속 그림·부호 크기는 <b>전체 규격의 30% 이상</b>`
+      },
+
+      // CHAPTER 03
+      {
+        chapter: "CH3",
+        chapterName: "제3장 산업안전심리",
+        title: "1. 심리검사의 구비조건 (특성)",
+        tags: ["신뢰성", "타당성", "객관성", "표준화", "실용성"],
+        body: `• <b>신뢰성</b>: 동일인 대상 검사 시 조건·시기에 무관한 <b>일관성</b><br>
+• <b>타당성</b>: 측정하려는 본래 내용을 얼마나 충실하게 측정하는가의 정확성<br>
+• <b>객관성</b>: 채점자의 주관 배제, 채점의 객관성<br>
+• <b>표준화</b>: 검사 절차, 조건, 분위기, 통제의 일관성 및 통일성`
+      },
+      {
+        chapter: "CH3",
+        chapterName: "제3장 산업안전심리",
+        title: "2. 지각과 정서, 기억과 망각",
+        tags: ["지각", "기억", "기명", "파지", "재생", "재인", "에빙하우스"],
+        body: `• <b>기억 4단계</b>: 기명(간직) ➔ 파지(보존) ➔ 재생(떠올림) ➔ 재인(알아봄)<br>
+• <b>에빙하우스 망각곡선</b>:<br>
+  - 학습 20분 후: 58% 기억 (42% 망각)<br>
+  - 학습 1시간 후: 44% 기억 (56% 망각)<br>
+  - 학습 1일 후: 33% 기억 ➔ <i>주기적 복습 필수</i>`
+      },
+      {
+        chapter: "CH3",
+        chapterName: "제3장 산업안전심리",
+        title: "3. 불안전행동 & 산업안전심리 5요소",
+        tags: ["불안전행동", "의식의우회", "억측판단", "동기", "기질", "감정", "습성", "습관"],
+        body: `• <b>불안전행동 간접원인</b>: 망각, 의식의 우회(공상), 생략행위, 억측판단<br>
+• <b>억측판단 배경</b>: 희망적 관측('괜찮겠지'), 불확실한 지식, 과거 성공경험 선입관, 초조함<br>
+• <b>산업안전심리 5대 요소</b>: 동기(Motive), 기질(Temper), 감정(Emotion), 습성(Habits), 습관(Custom)`
+      },
+      {
+        chapter: "CH3",
+        chapterName: "제3장 산업안전심리",
+        title: "4. 착오, 착시 및 착각현상",
+        tags: ["착오", "착시", "자동운동", "유도운동", "가현운동"],
+        body: `• <b>착각현상 3가지</b>:<br>
+  1. <b>자동운동</b>: 암실 내 정지된 작은 빛을 응시하면 저절로 움직여 보이는 현상<br>
+  2. <b>유도운동</b>: 기준이 이동하여 정지된 물체가 움직이는 것처럼 느낌 (구름 속 달)<br>
+  3. <b>가현운동(β운동)</b>: 정지 화상이 급속 점멸하며 연속 운동으로 인식됨 (영화/영상)<br>
+• <b>대표 착시</b>: Müller-Lyer(화살표 길이), Ponzo, Hering, Poggendorff`
+      },
+
+      // CHAPTER 04
+      {
+        chapter: "CH4",
+        chapterName: "제4장 인간의 행동과학",
+        title: "1. 호손 실험 & 인간 의식 수준 (Phase)",
+        tags: ["호손", "의식레벨", "Phase", "신뢰성", "적극활동", "과긴장"],
+        body: `• <b>호손 실험</b>: 물리적 작업조건보다 '인간관계와 사기'가 생산성에 결정적 영향<br>
+• <b>인간 의식 수준 5단계 (Phase)</b>:<br>
+  - <b>Phase 0</b>: 무의식, 실신 (신뢰성 0)<br>
+  - <b>Phase I</b>: 피로, 졸음, 단조로움 (신뢰성 0.9 이하)<br>
+  - <b>Phase II</b>: 안정, 휴식, 정례작업 (신뢰성 0.99~0.99999)<br>
+  - <b>Phase III</b>: <b>명료, 적극활동, 전향적</b> (신뢰성 <b>0.99999 이상</b> - 최적)<br>
+  - <b>Phase IV</b>: 과긴장, 공포, 패닉 (신뢰성 0.9 이하)`
+      },
+      {
+        chapter: "CH4",
+        chapterName: "제4장 인간의 행동과학",
+        title: "2. 레윈(Lewin)의 법칙 & 부적응/방어기제",
+        tags: ["레윈", "B=f(P,E)", "동일화", "투사", "합리화", "승화"],
+        body: `• <b>레윈의 법칙</b>: <b>B = f(P · E)</b> (행동=개체×환경의 상호작용)<br>
+• <b>적응기제 (방어기제)</b>:<br>
+  - <b>보상</b>: 다른 능력 개발로 결함 보충<br>
+  - <b>합리화</b>: 그럴듯한 변명으로 자기 정당화<br>
+  - <b>투사</b>: 자신의 결함·죄책감을 남의 탓으로 돌림<br>
+  - <b>승화</b>: 욕구를 예술·학문 등 건설적 방향으로 발산<br>
+  - <b>퇴행</b>: 이전의 유치한 단계로 돌아감`
+      },
+      {
+        chapter: "CH4",
+        chapterName: "제4장 인간의 행동과학",
+        title: "3. 주요 동기부여 이론 비교",
+        tags: ["매슬로우", "맥그리거", "허즈버그", "알더퍼", "위생요인", "X이론", "Y이론"],
+        body: `• <b>매슬로우 5단계 욕구</b>: 생리적 ➔ 안전 ➔ 사회적 ➔ 자기존경 ➔ 자아실현<br>
+• <b>맥그리거 X·Y 이론</b>:<br>
+  - X이론: 성악설, 일 싫어함, 명령/통제/강제 필요<br>
+  - Y이론: 성선설, 자아실현, 자율통제/민주적 리더십<br>
+• <b>허즈버그 2요인</b>:<br>
+  - 위생요인(환경, 급여, 인간관계) ➔ 충족해도 불만만 해소될 뿐 성과 증대 없음<br>
+  - 동기요인(성취감, 책임감, 발전) ➔ 충족 시 적극적 직무만족 향상<br>
+• <b>알더퍼 ERG 이론</b>: Existence(존재), Relatedness(관계), Growth(성장) - 좌절-퇴행 고려`
+      },
+      {
+        chapter: "CH4",
+        chapterName: "제4장 인간의 행동과학",
+        title: "4. 주의의 특성 & 부주의 현상",
+        tags: ["주의", "선택성", "방향성", "변동성", "의식의우회", "의식의단절"],
+        body: `• <b>주의의 3특성</b>:<br>
+  - <b>선택성</b>: 여러 자극 중 특정 대상만 여과 수용<br>
+  - <b>방향성</b>: 시선의 초점이 맞은 곳만 인지 (벗어나면 무시)<br>
+  - <b>변동성</b>: 한곳에 장시간 집중 불가 (30분 넘으면 작업성능 저하)<br>
+• <b>부주의 현상</b>: 의식의 우회(잡념), 의식수준 저하(피로), 의식의 단절(질병), 의식의 과잉(패닉)`
+      },
+      {
+        chapter: "CH4",
+        chapterName: "제4장 인간의 행동과학",
+        title: "5. 리더십 유형 & 관리 그리드",
+        tags: ["리더십", "헤드십", "관리그리드", "1,1", "1,9", "9,1", "9,9"],
+        body: `• <b>리더십 vs 헤드십</b>: 리더십은 내부 선출 민주적 지도자, 헤드십은 외부 임명 권위적 지도자<br>
+• <b>블레이크와 머튼의 관리 그리드 이론</b>:<br>
+  - <b>(1,1) 무관심형</b>: 생산과 인간 모두 무관심<br>
+  - <b>(1,9) 인기형(동호회)</b>: 인간중심, 생산 무시<br>
+  - <b>(9,1) 과업형</b>: 인간 무시, 생산/일만 강요<br>
+  - <b>(5,5) 타협형</b>: 절충<br>
+  - <b>(9,9) 이상형(팀형)</b>: 인간과 생산 모두 최고 관심 (가장 바람직)`
+      },
+      {
+        chapter: "CH4",
+        chapterName: "제4장 인간의 행동과학",
+        title: "6. 피로 측정 & 생체리듬 (바이오리듬)",
+        tags: ["피로", "플리커", "RMR", "생체리듬", "23일", "28일", "33일", "위험일"],
+        body: `• <b>정신피로 측정</b>: 점멸융합주파수(플리커치 - 피로 시 주파수 저하), EEG(뇌파)<br>
+• <b>생체리듬 3요소 주기</b>:<br>
+  - <b>육체적 리듬 (P)</b>: <b>23일</b> 주기 (청색 실선)<br>
+  - <b>감성적 리듬 (S)</b>: <b>28일</b> 주기 (적색 점선)<br>
+  - <b>지성적 리듬 (I)</b>: <b>33일</b> 주기 (녹색 일점쇄선)<br>
+• <b>위험일</b>: (+)곡선과 (-)곡선이 교차하는 영(0)의 지점 (사고 위험 극대)`
+      },
+
+      // CHAPTER 05
+      {
+        chapter: "CH5",
+        chapterName: "제5장 안전보건교육",
+        title: "1. 학습지도 5대 원리 & 학습이론",
+        tags: ["개별화", "자발성", "손다이크", "파블로프", "스키너", "준비성", "연습", "효과"],
+        body: `• <b>학습지도 5원리</b>: 개별화, 통합, 사회화, 자발성, 직관의 원리<br>
+• <b>손다이크(Thorndike) 시행착오설 3법칙</b>: 준비성의 법칙, 연습의 법칙, 효과의 법칙<br>
+• <b>파블로프 조건반사 4원리</b>: 계속성, 일관성, 강도, 시간의 원리 (자극이 조금 앞서야 함)<br>
+• <b>스키너 조작적 조건형성</b>: 강화(보상)를 통한 반응 빈도 증대`
+      },
+      {
+        chapter: "CH5",
+        chapterName: "제5장 안전보건교육",
+        title: "2. 안전교육의 3단계 & 교수법 4단계",
+        tags: ["지식교육", "기능교육", "태도교육", "도입", "제시", "적용", "확인"],
+        body: `• <b>안전교육의 3단계</b>:<br>
+  1단계: <b>지식교육</b> (강의, 시청각 - 지식 전달)<br>
+  2단계: <b>기능교육</b> (실습, 견학 - 반복 경험을 통한 기술 체득)<br>
+  3단계: <b>태도교육</b> (안전의 습관화 - 지도, 모범, 칭찬)<br>
+• <b>교육법(수업) 4단계</b>:<br>
+  1단계: 도입 (준비) ➔ 2단계: 제시 (작업 설명) ➔ 3단계: 적용 (작업 시켜봄) ➔ 4단계: 확인 (평가/살펴봄)`
+      },
+      {
+        chapter: "CH5",
+        chapterName: "제5장 안전보건교육",
+        title: "3. 교육방법 (OJT, Off JT, TWI)",
+        tags: ["OJT", "Off JT", "TWI", "JIT", "JMT", "JRT", "JST"],
+        body: `• <b>OJT (직장 내 교육)</b>: 직속상사가 실무 작업표준으로 개별 지도. 즉각적 개선 가능<br>
+• <b>Off JT (직장 외 교육)</b>: 다수 근로자 집합 교육, 체계적 지식 전달 및 외부 전문가 초빙<br>
+• <b>TWI (감독자 훈련) 4대 과정</b>:<br>
+  - <b>JIT</b>: 작업지도훈련 (Job Instruction)<br>
+  - <b>JMT</b>: 작업방법훈련 (Job Method)<br>
+  - <b>JRT</b>: 인간관계훈련 (Job Relation)<br>
+  - <b>JST</b>: 작업안전훈련 (Job Safety)`
+      },
+      {
+        chapter: "CH5",
+        chapterName: "제5장 안전보건교육",
+        title: "4. 주요 토의 교육 기법 비교",
+        tags: ["패널디스커션", "심포지엄", "포럼", "버즈세션", "사례연구"],
+        body: `• <b>패널디스커션</b>: 전문가 4~5명이 청중 앞에서 토의 후 청중 전원 참가 질의토의<br>
+• <b>심포지엄</b>: 몇몇 전문가가 각자의 견해를 발표한 후 참가자와 질의응답<br>
+• <b>포럼</b>: 새로운 자료 제시 후 참가자 스스로 문제 제기하여 심층 토의<br>
+• <b>버즈세션 (6-6 회의)</b>: 6명씩 소집단을 구성해 6분간 자유토론 후 전체 종합<br>
+• <b>사례연구법</b>: 실제 사례를 제시하고 문제점 분석 및 대책 토의`
       }
     ];
 
     // ----------------------------------------------------
-    // [4] 애플리케이션 상태 관리
+    // [4] 애플리케이션 제어 로직
     // ----------------------------------------------------
-    let currentTab = "quiz";
-    let currentCategory = "ALL";
+    let currentQuizCategory = "ALL";
     let quizIndex = 0;
-    let answeredQuestions = {}; // { id: selectedIdx }
+    let answeredQuestions = {};
     let bookmarks = JSON.parse(localStorage.getItem("sanangi_bookmarks") || "[]");
 
+    let currentOxCategory = "ALL";
     let oxIndex = 0;
     let oxStreak = 0;
     let oxAnswered = false;
 
-    // ----------------------------------------------------
-    // [5] 4지선다 퀴즈 기능
-    // ----------------------------------------------------
+    // --- 4지선다 로직 ---
     function getFilteredQuizList() {
-      return quizData.filter(q => currentCategory === "ALL" || q.chapter === currentCategory);
+      return quizData.filter(q => currentQuizCategory === "ALL" || q.chapter === currentQuizCategory);
     }
 
     function renderQuiz() {
@@ -395,7 +1043,7 @@
       const bookmarkBtn = document.getElementById("quiz-bookmark-btn");
 
       if (!item) {
-        document.getElementById("quiz-title").textContent = "선택한 과목에 등록된 문제가 없습니다.";
+        document.getElementById("quiz-title").textContent = "해당 과목에 등록된 문제가 없습니다.";
         document.getElementById("quiz-options").innerHTML = "";
         document.getElementById("quiz-progress").textContent = "0 / 0";
         document.getElementById("quiz-chapter").textContent = "없음";
@@ -444,7 +1092,7 @@
         explanationBox.classList.remove("hidden");
         const isCorrect = selected === item.answer;
         const statusEl = document.getElementById("quiz-result-status");
-        statusEl.textContent = isCorrect ? "정답입니다! 🎉" : "오답입니다! (오답노트 자동 저장) 💡";
+        statusEl.textContent = isCorrect ? "정답입니다! 🎉" : "오답입니다! (보관함 자동저장) 💡";
         statusEl.className = isCorrect ? "font-bold block mb-1 text-sm text-emerald-600" : "font-bold block mb-1 text-sm text-rose-600";
         document.getElementById("quiz-explanation-text").textContent = item.explanation;
       } else {
@@ -457,7 +1105,6 @@
       const item = list[quizIndex];
       answeredQuestions[item.id] = idx;
 
-      // 오답이면 북마크에 자동 등록
       if (idx !== item.answer && !bookmarks.includes(item.id)) {
         bookmarks.push(item.id);
         saveBookmarks();
@@ -482,16 +1129,28 @@
       document.getElementById("bookmark-count").textContent = bookmarks.length;
     }
 
-    // ----------------------------------------------------
-    // [6] OX 스피드 모드 기능
-    // ----------------------------------------------------
+    // --- OX 스피드 모드 로직 ---
+    function getFilteredOxList() {
+      return oxData.filter(item => currentOxCategory === "ALL" || item.chapterId === currentOxCategory);
+    }
+
     function renderOX() {
-      const item = oxData[oxIndex];
+      const list = getFilteredOxList();
+      const item = list[oxIndex];
       oxAnswered = false;
 
-      document.getElementById("ox-chapter").textContent = `[${item.chapter}] 지문`;
+      if (!item) {
+        document.getElementById("ox-chapter").textContent = "문제 없음";
+        document.getElementById("ox-statement").textContent = "선택한 과목에 등록된 OX 지문이 없습니다.";
+        document.getElementById("ox-counter").textContent = "0 / 0";
+        return;
+      }
+
+      document.getElementById("ox-chapter").textContent = `[${item.chapter}] 빈출 지문`;
       document.getElementById("ox-statement").textContent = `"${item.statement}"`;
-      document.getElementById("ox-streak-text").textContent = `연속 정답: ${oxStreak}회`;
+      document.getElementById("ox-counter").textContent = `${oxIndex + 1} / ${list.length}`;
+      document.getElementById("ox-streak-text").textContent = `연속 정답: ${oxStreak}회 🔥`;
+      
       document.getElementById("ox-feedback-box").classList.add("hidden");
       document.getElementById("ox-buttons-box").classList.remove("hidden");
       document.getElementById("ox-next-box").classList.add("hidden");
@@ -501,9 +1160,10 @@
       if (oxAnswered) return;
       oxAnswered = true;
 
-      const item = oxData[oxIndex];
+      const list = getFilteredOxList();
+      const item = list[oxIndex];
       const isCorrect = val === item.answer;
-      
+
       if (isCorrect) {
         oxStreak++;
       } else {
@@ -515,24 +1175,25 @@
       const feedbackDesc = document.getElementById("ox-feedback-desc");
 
       feedbackBox.classList.remove("hidden");
-      feedbackTitle.textContent = isCorrect ? "정답입니다! 🎯" : `틀렸습니다! 정답은 [ ${item.answer} ] ❌`;
+      feedbackTitle.textContent = isCorrect ? "정답입니다! 🎯" : `오답입니다! 정답은 [ ${item.answer} ] ❌`;
       feedbackTitle.className = isCorrect ? "font-bold block mb-1 text-sm text-emerald-600" : "font-bold block mb-1 text-sm text-rose-600";
       feedbackDesc.textContent = item.desc;
 
       document.getElementById("ox-buttons-box").classList.add("hidden");
       document.getElementById("ox-next-box").classList.remove("hidden");
-      document.getElementById("ox-streak-text").textContent = `연속 정답: ${oxStreak}회`;
+      document.getElementById("ox-streak-text").textContent = `연속 정답: ${oxStreak}회 🔥`;
     }
 
-    // ----------------------------------------------------
-    // [7] 포켓 요약노트 기능
-    // ----------------------------------------------------
+    // --- 포켓 요약노트 로직 ---
+    let currentSummaryCat = "ALL";
     function renderSummaryCards(filter = "") {
       const container = document.getElementById("summary-cards-container");
       container.innerHTML = "";
       const query = filter.trim().toLowerCase();
 
       const filtered = summaryNotes.filter(n => {
+        const catMatch = currentSummaryCat === "ALL" || n.chapter === currentSummaryCat;
+        if (!catMatch) return false;
         if (!query) return true;
         const textMatch = n.title.toLowerCase().includes(query) || n.body.toLowerCase().includes(query);
         const tagMatch = n.tags.some(t => t.toLowerCase().includes(query));
@@ -540,7 +1201,7 @@
       });
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div class="p-6 text-center text-xs text-slate-400">일치하는 요약 항목이 없습니다.</div>`;
+        container.innerHTML = `<div class="p-8 text-center text-xs text-slate-400">일치하는 요약 내용이 없습니다.</div>`;
         return;
       }
 
@@ -548,16 +1209,17 @@
         const card = document.createElement("div");
         card.className = "bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col gap-2";
         card.innerHTML = `
-          <h4 class="text-xs font-black text-blue-600 dark:text-blue-400 tracking-wide">${note.title}</h4>
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-black text-blue-600 dark:text-blue-400">${note.title}</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">${note.chapterName}</span>
+          </div>
           <div class="text-xs text-slate-700 dark:text-slate-200 leading-relaxed">${note.body}</div>
         `;
         container.appendChild(card);
       });
     }
 
-    // ----------------------------------------------------
-    // [8] 오답노트 & 보관함 기능
-    // ----------------------------------------------------
+    // --- 오답노트 & 보관함 렌더링 ---
     function renderBookmarksList() {
       const container = document.getElementById("bookmarks-list");
       container.innerHTML = "";
@@ -569,7 +1231,7 @@
         container.innerHTML = `
           <div class="p-8 text-center text-slate-400 text-xs flex flex-col gap-2">
             <span>보관된 오답이나 북마크 문제가 없습니다.</span>
-            <span>4지선다 모드에서 틀린 문제는 자동으로 이곳에 모입니다.</span>
+            <span>4지선다 모드에서 틀린 문제는 자동으로 이곳에 저장됩니다.</span>
           </div>
         `;
         return;
@@ -584,27 +1246,23 @@
             <button class="remove-btn text-rose-500 hover:text-rose-700 text-xs font-semibold">삭제</button>
           </div>
           <p class="text-xs font-bold leading-snug">Q. ${q.question}</p>
-          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          <div class="text-xs text-slate-500 dark:text-slate-400 mt-1 bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800">
             <span class="font-bold text-emerald-600 dark:text-emerald-400">정답: ${q.answer + 1}번 (${q.options[q.answer]})</span>
             <p class="mt-1">${q.explanation}</p>
           </div>
         `;
-        card.querySelector(".remove-btn").onclick = () => {
-          toggleBookmark(q.id);
-        };
+        card.querySelector(".remove-btn").onclick = () => toggleBookmark(q.id);
         container.appendChild(card);
       });
     }
 
     // ----------------------------------------------------
-    // [9] 이벤트 바인딩 및 초기화
+    // [5] 이벤트 바인딩
     // ----------------------------------------------------
-    // 탭 전환
+    // 메인 탭 전환
     document.querySelectorAll(".nav-tab").forEach(tab => {
       tab.onclick = (e) => {
         const targetTab = e.currentTarget.dataset.tab;
-        currentTab = targetTab;
-
         document.querySelectorAll(".nav-tab").forEach(b => {
           b.className = "nav-tab py-2 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all text-center";
         });
@@ -615,23 +1273,23 @@
 
         if (targetTab === "bookmarks") renderBookmarksList();
         if (targetTab === "summary") renderSummaryCards();
+        if (targetTab === "ox") renderOX();
       };
     });
 
-    // 4지선다 카테고리 필터
+    // 4지선다 카테고리
     document.querySelectorAll(".cat-btn").forEach(btn => {
       btn.onclick = (e) => {
         document.querySelectorAll(".cat-btn").forEach(b => {
           b.className = "cat-btn px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 whitespace-nowrap";
         });
         e.currentTarget.className = "cat-btn px-3 py-1.5 rounded-full bg-blue-600 text-white whitespace-nowrap";
-        currentCategory = e.currentTarget.dataset.cat;
+        currentQuizCategory = e.currentTarget.dataset.cat;
         quizIndex = 0;
         renderQuiz();
       };
     });
 
-    // 4지선다 네비게이션
     document.getElementById("quiz-prev-btn").onclick = () => {
       const list = getFilteredQuizList();
       if (quizIndex > 0) {
@@ -662,7 +1320,20 @@
       if (item) toggleBookmark(item.id);
     };
 
-    // OX 버튼 리스너
+    // OX 카테고리 필터
+    document.querySelectorAll(".ox-cat-btn").forEach(btn => {
+      btn.onclick = (e) => {
+        document.querySelectorAll(".ox-cat-btn").forEach(b => {
+          b.className = "ox-cat-btn px-3 py-1.5 rounded-full bg-slate-200 dark:bg-slate-800 whitespace-nowrap";
+        });
+        e.currentTarget.className = "ox-cat-btn px-3 py-1.5 rounded-full bg-blue-600 text-white whitespace-nowrap";
+        currentOxCategory = e.currentTarget.dataset.cat;
+        oxIndex = 0;
+        renderOX();
+      };
+    });
+
+    // OX 버튼 클릭
     document.querySelectorAll(".ox-choice-btn").forEach(btn => {
       btn.onclick = (e) => {
         handleOXChoice(e.currentTarget.dataset.val);
@@ -670,18 +1341,30 @@
     });
 
     document.getElementById("ox-next-btn").onclick = () => {
-      oxIndex = (oxIndex + 1) % oxData.length;
+      const list = getFilteredOxList();
+      oxIndex = (oxIndex + 1) % list.length;
       renderOX();
     };
 
-    // 요약노트 검색 필터
+    // 요약노트 카테고리 필터 & 검색
+    document.querySelectorAll(".summary-cat-btn").forEach(btn => {
+      btn.onclick = (e) => {
+        document.querySelectorAll(".summary-cat-btn").forEach(b => {
+          b.className = "summary-cat-btn px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-800 whitespace-nowrap";
+        });
+        e.currentTarget.className = "summary-cat-btn px-2.5 py-1 rounded-lg bg-blue-600 text-white whitespace-nowrap";
+        currentSummaryCat = e.currentTarget.dataset.cat;
+        renderSummaryCards(document.getElementById("summary-search").value);
+      };
+    });
+
     document.getElementById("summary-search").oninput = (e) => {
       renderSummaryCards(e.target.value);
     };
 
-    // 오답노트 전체 비우기
+    // 보관함 비우기
     document.getElementById("clear-bookmarks-btn").onclick = () => {
-      if (confirm("저장된 오답 및 북마크를 모두 삭제하시겠습니까?")) {
+      if (confirm("저장된 오답 및 북마크를 모두 비우시겠습니까?")) {
         bookmarks = [];
         saveBookmarks();
         renderBookmarksList();
@@ -694,7 +1377,7 @@
       document.documentElement.classList.toggle("dark");
     };
 
-    // 앱 초기화 실행
+    // 초기 실행
     saveBookmarks();
     renderQuiz();
     renderOX();
