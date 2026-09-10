@@ -1,11 +1,39 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
+<meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>산안기 퀵패스 - 필기 핵심 완성</title>
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232563eb'/><text x='50%' y='55%' font-size='50' text-anchor='middle' dominant-baseline='central'>⛑️</text></svg>">
-  
+
+  <!-- 브라우저 탭 아이콘 (파비콘) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛑️</text></svg>">
+
+  <!-- 아이폰 홈 화면 추가용 아이콘 (Safari 호환 Canvas PNG) -->
+  <script>
+    (function() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 180;
+      canvas.height = 180;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#2563eb';
+      if (ctx.roundRect) {
+        ctx.roundRect(0, 0, 180, 180, 40);
+        ctx.fill();
+      } else {
+        ctx.fillRect(0, 0, 180, 180);
+      }
+
+      ctx.font = '100px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('⛑️', 90, 95);
+
+      const link = document.createElement('link');
+      link.rel = 'apple-touch-icon';
+      link.href = canvas.toDataURL('image/png');
+      document.head.appendChild(link);
+    })();
+  </script> 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
