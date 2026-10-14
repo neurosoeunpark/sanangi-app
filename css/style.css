@@ -366,6 +366,9 @@ a.sec-item.card .sec-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; }
   content: ''; position: absolute; left: 3px; top: .72em;
   width: 4px; height: 4px; border-radius: 50%; background: var(--text-3);
 }
+/* 소제목 — 불릿 없이 단락으로 */
+.note-body .nb-h { margin: 12px 0 4px; color: var(--text); }
+.note-body .nb-h:first-child { margin-top: 0; }
 
 /* 요약 본문 — 셀이 짧은 표 */
 .note-body .tscroll {

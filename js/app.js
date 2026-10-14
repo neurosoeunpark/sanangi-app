@@ -159,6 +159,12 @@
           `<li><span class="nb-no">${esc(x.no)}</span><span>${decBold(x.text, 'cloze', false)}</span></li>`).join('')}</ul>`;
   }
 
+  /* 줄 전체가 하나의 굵게로만 이루어졌는지 — 소제목 판정 */
+  function isHeadingLine(raw) {
+    const t = encBold(raw).trim();
+    return t.startsWith(B_O) && t.endsWith(B_C) && t.indexOf(B_C) === t.length - 1;
+  }
+
   function mdBody(src) {
     const lines = String(src ?? '').split('\n');
     let out = '', i = 0, para = [], list = [];
@@ -181,7 +187,9 @@
       if (!l.trim()) { flush(); i++; continue; }
       const numbered = splitNumbered(l);
       if (numbered) { flush(); out += numbered; i++; continue; }
-      flushList(); para.push(fmtP(l)); i++;
+      // 줄 전체가 굵게면 소제목, 나머지 평문은 모두 불릿으로 통일
+      if (isHeadingLine(l)) { flush(); out += `<p class="nb-p nb-h">${fmtP(l)}</p>`; i++; continue; }
+      flushPara(); list.push(`<li>${fmtC(l)}</li>`); i++;
     }
     flush();
     return out;
