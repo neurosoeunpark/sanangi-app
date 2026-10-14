@@ -14,7 +14,7 @@
   const $badge = document.getElementById('wrongBadge');
 
   /* ---------------- 저장소 ---------------- */
-  const blank = () => ({ done: {}, ans: {}, note: {}, subject: null });
+  const blank = () => ({ done: {}, ans: {}, note: {}, subject: null, blankMode: false });
   let S = load();
   function load() {
     try {
@@ -66,8 +66,66 @@
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   // **굵게**, ==형광펜== 지원
   const fmt = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/==(.+?)==/g, '<mark>$1</mark>');
-  // 요약 본문: 기존 데이터는 HTML(<b>, <br>)을 그대로 쓰고, 새 데이터는 줄바꿈과 **굵게**를 살린다
-  const noteBody = n => n.html ? n.body.replace(/\n/g, '') : fmt(n.body).replace(/\n/g, '<br>');
+  // 빈칸 모드 대상(.cloze)을 붙인 버전 — 요약 본문에서만 쓴다
+  const fmtC = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b class="cloze">$1</b>').replace(/==(.+?)==/g, '<mark class="cloze">$1</mark>');
+  /* 요약 본문 렌더
+     - 기존 데이터(html:true)는 HTML(<b>, <br>)을 그대로 쓴다
+     - 새 데이터는 마크다운 표 → 표/카드, `· `·`- ` 불릿 → 목록, 나머지는 줄바꿈 + **굵게** */
+  const isRow = l => /^\s*\|.*\|\s*$/.test(l);
+  const isSep = l => /^\s*\|[\s:|-]+\|\s*$/.test(l);
+  const cellsOf = l => l.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+
+  function mdTable(head, rows) {
+    if (!rows.length) return '';
+    const cols = head.length;
+    const long = rows.some(r => r.some(c => c.length > 26)) || head.some(c => c.length > 26);
+    if (!long) {
+      // 셀이 짧으면 진짜 표로 (좁은 화면에서는 가로 스크롤)
+      return '<div class="tscroll"><table><thead><tr>'
+        + head.map(c => `<th>${fmt(c)}</th>`).join('')
+        + '</tr></thead><tbody>'
+        + rows.map(r => '<tr>' + head.map((_, i) => `<td>${fmtC(r[i] || '')}</td>`).join('') + '</tr>').join('')
+        + '</tbody></table></div>';
+    }
+    // 긴 셀은 행마다 카드로 쪼갠다
+    return '<div class="tcards">' + rows.map(r => {
+      const headCell = `<div class="tc-h">${fmt(r[0] || '')}</div>`;
+      if (cols === 2) return `<div class="tcard">${headCell}<div class="tc-b">${fmtC(r[1] || '')}</div></div>`;
+      const body = head.slice(1).map((h, i) => r[i + 1]
+        ? `<div class="tc-r"><span class="tc-k">${fmt(h)}</span><span class="tc-v">${fmtC(r[i + 1])}</span></div>` : '').join('');
+      return `<div class="tcard">${headCell}${body}</div>`;
+    }).join('') + '</div>';
+  }
+
+  function mdBody(src) {
+    const lines = String(src ?? '').split('\n');
+    let out = '', i = 0, para = [], list = [];
+    const flushList = () => { if (list.length) { out += `<ul class="nb-ul">${list.join('')}</ul>`; list = []; } };
+    const flushPara = () => { if (para.length) { out += `<p class="nb-p">${para.join('<br>')}</p>`; para = []; } };
+    const flush = () => { flushPara(); flushList(); };
+    while (i < lines.length) {
+      const l = lines[i];
+      if (isRow(l) && isSep(lines[i + 1] || '')) {
+        flush();
+        const head = cellsOf(l);
+        i += 2;
+        const rows = [];
+        while (i < lines.length && isRow(lines[i]) && !isSep(lines[i])) { rows.push(cellsOf(lines[i])); i++; }
+        out += mdTable(head, rows);
+        continue;
+      }
+      const bullet = l.match(/^\s*(?:·|-|•)\s+(.*)$/);
+      if (bullet) { flushPara(); list.push(`<li>${fmtC(bullet[1])}</li>`); i++; continue; }
+      if (!l.trim()) { flush(); i++; continue; }
+      flushList(); para.push(fmtC(l)); i++;
+    }
+    flush();
+    return out;
+  }
+
+  const noteBody = n => n.html
+    ? n.body.replace(/\n/g, '').replace(/<b>/g, '<b class="cloze">')
+    : mdBody(n.body);
   const CIRCLE = ['①', '②', '③', '④', '⑤'];
   const chev = '<svg class="chev" width="18" height="18" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -257,13 +315,21 @@
     const blocks = (ch.notes || []).map(n => `
       <section class="card sum-card">
         <h3>${fmt(n.title)}</h3>
-        ${(n.tags || []).length ? `<div class="terms">${n.tags.map(t => `<span class="term">#${esc(t)}</span>`).join('')}</div>` : ''}
+        ${(n.tags || []).length ? `<div class="terms">${n.tags.map(t => `<span class="term cloze">#${esc(t)}</span>`).join('')}</div>` : ''}
         <div class="note-body">${noteBody(n)}</div>
       </section>`).join('');
     const done = !!S.done[ch.id];
     const s = chStats(ch);
+    // 굵게 표시된 핵심 숫자·용어가 빈칸이 된다
+    const hasBlank = (ch.notes || []).some(n => n.html ? /<b>/.test(n.body || '') : /\*\*.+?\*\*/.test(n.body || ''));
+    const on = !!S.blankMode && hasBlank;
     body.innerHTML = `
-      <div class="stack sum-body">${blocks || '<div class="empty">요약이 아직 없어요.</div>'}</div>
+      ${hasBlank ? `<div class="blank-bar">
+        <button class="btn sm ${S.blankMode ? 'on' : ''}" id="blankBtn" aria-pressed="${!!S.blankMode}">빈칸 모드 ${S.blankMode ? '켜짐' : '꺼짐'}</button>
+        ${on ? '<button class="btn sm" id="revealBtn">모두 보기</button>' : ''}
+        <span class="blank-hint">${on ? '빈칸을 눌러 답 확인' : '핵심 숫자·용어를 가립니다'}</span>
+      </div>` : ''}
+      <div class="stack sum-body ${on ? 'blanks' : ''}">${blocks || '<div class="empty">요약이 아직 없어요.</div>'}</div>
       <div class="stack" style="margin-top:18px">
         <button class="btn block ${done ? 'ok' : ''}" id="doneBtn">${done ? '✓ 학습 완료' : '학습 완료로 표시'}</button>
         ${s.mc ? `<a class="btn primary block" href="#/ch/${ch.id}?tab=mc" data-go="mc">4지선다 풀러 가기 (${s.mc})</a>` : ''}
@@ -285,6 +351,24 @@
       e.preventDefault();
       $app.querySelector(`.seg button[data-tab="${a.dataset.go}"]`).click();
     }));
+    const bb = body.querySelector('#blankBtn');
+    if (bb) bb.addEventListener('click', () => {
+      S.blankMode = !S.blankMode; save();
+      renderSummary(body, ch, prev, next);
+      toast(S.blankMode ? '빈칸 모드 켜짐 — 빈칸을 눌러 답을 확인하세요' : '빈칸 모드 꺼짐');
+    });
+    const rb = body.querySelector('#revealBtn');
+    if (rb) rb.addEventListener('click', e => {
+      const sb = body.querySelector('.sum-body');
+      const hidden = sb.querySelectorAll('.cloze:not(.shown)').length;
+      sb.querySelectorAll('.cloze').forEach(x => x.classList.toggle('shown', !!hidden));
+      e.currentTarget.textContent = hidden ? '다시 가리기' : '모두 보기';
+    });
+    const sb = body.querySelector('.sum-body');
+    if (sb) sb.addEventListener('click', e => {
+      const c = e.target.closest('.blanks .cloze');
+      if (c) c.classList.toggle('shown');
+    });
   }
 
   /* ---------------- 공용 풀이 엔진 ---------------- */

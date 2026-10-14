@@ -355,6 +355,71 @@ a.sec-item.card .sec-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; }
 /* 요약 본문 */
 .note-body { font-size: 15px; line-height: 1.75; color: var(--text-2); }
 .note-body b { color: var(--text); }
+
+/* 요약 본문 — 문단 / 불릿 목록 */
+.note-body .nb-p { margin: 0 0 10px; }
+.note-body .nb-p:last-child { margin-bottom: 0; }
+.note-body .nb-ul { margin: 0 0 10px; padding: 0; list-style: none; }
+.note-body .nb-ul:last-child { margin-bottom: 0; }
+.note-body .nb-ul li { position: relative; padding-left: 14px; margin: 3px 0; }
+.note-body .nb-ul li::before {
+  content: ''; position: absolute; left: 3px; top: .72em;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--text-3);
+}
+
+/* 요약 본문 — 셀이 짧은 표 */
+.note-body .tscroll {
+  overflow-x: auto; border: 1px solid var(--line); border-radius: 12px;
+  margin: 4px 0 12px; background: var(--surface); -webkit-overflow-scrolling: touch;
+}
+.note-body .tscroll:last-child { margin-bottom: 0; }
+.note-body table { border-collapse: collapse; font-size: 13.5px; min-width: 100%; }
+.note-body th, .note-body td {
+  padding: 8px 10px; border-bottom: 1px solid var(--line);
+  text-align: left; vertical-align: top; white-space: nowrap;
+}
+.note-body thead th {
+  background: var(--surface-2); color: var(--text-3);
+  font-size: 12.5px; font-weight: 700; white-space: nowrap;
+}
+.note-body tbody tr:last-child td { border-bottom: 0; }
+.note-body td b { color: var(--text); }
+
+/* 요약 본문 — 셀이 긴 표는 행마다 카드로 */
+.note-body .tcards { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 12px; }
+.note-body .tcards:last-child { margin-bottom: 0; }
+.note-body .tcard {
+  border: 1px solid var(--line); border-radius: 12px;
+  padding: 11px 13px; background: var(--surface);
+}
+.note-body .tc-h { font-weight: 700; font-size: 15px; color: var(--text); margin-bottom: 4px; }
+.note-body .tc-b { font-size: 14px; line-height: 1.6; }
+.note-body .tc-r {
+  display: grid; grid-template-columns: minmax(64px, 30%) 1fr; gap: 8px;
+  padding: 5px 0; border-top: 1px dashed var(--line); font-size: 14px; line-height: 1.55;
+}
+.note-body .tc-k { color: var(--text-3); font-size: 12.5px; font-weight: 600; padding-top: 2px; }
+
+/* ---------------- 빈칸 모드 ---------------- */
+.blank-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.blank-bar .btn.on { background: var(--warn); border-color: var(--warn); color: #fff; }
+.blank-hint { font-size: 13px; color: var(--text-3); }
+
+/* 굵게 표시된 핵심 숫자·용어와 태그를 가린다 (탭하면 드러남) */
+.blanks .cloze {
+  color: transparent; background: var(--warn-soft);
+  border-bottom: 2px solid var(--warn); border-radius: 3px;
+  cursor: pointer; transition: color .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.blanks .cloze * { color: transparent; }
+.blanks .cloze.shown, .blanks .cloze.shown * { color: var(--text); }
+.blanks .terms .term.shown { color: var(--brand); }
+/* 표 헤더·카드 제목·라벨은 문제 쪽이므로 가리지 않는다 */
+.blanks th .cloze, .blanks .tc-h .cloze, .blanks .tc-k .cloze {
+  color: inherit; background: none; border-bottom: 0; cursor: auto;
+}
+.blanks th .cloze *, .blanks .tc-h .cloze *, .blanks .tc-k .cloze * { color: inherit; }
 .sum-card .terms { margin: 2px 0 10px; }
 
 /* OX 선택 버튼 */
