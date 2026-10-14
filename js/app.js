@@ -66,8 +66,46 @@
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   // **굵게**, ==형광펜== 지원
   const fmt = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/==(.+?)==/g, '<mark>$1</mark>');
-  // 빈칸 모드 대상(.cloze)을 붙인 버전 — 요약 본문에서만 쓴다
-  const fmtC = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<b class="cloze">$1</b>').replace(/==(.+?)==/g, '<mark class="cloze">$1</mark>');
+  const NO_RE = /[①-⑳]/;          // ① ~ ⑳
+  const noVal = c => c.charCodeAt(0) - 0x245F;
+  /* 굵게의 여는/닫는 경계를 제어문자로 바꾼 뒤(**만으로는 구분 불가),
+     ①②③ 항목번호가 굵게 안에 있으면 밖으로 뺀다 — 빈칸 모드에서 번호까지 가려지지 않도록 */
+  const B_O = '\u0001', B_C = '\u0002';
+  const LIFT_RE = new RegExp(B_O + '\\s*([\\u2460-\\u2473])\\s*', 'g');
+  const encBold = s => String(s ?? '')
+    .replace(/[\u0001\u0002]/g, '')
+    .replace(/\*\*(.+?)\*\*/g, B_O + '$1' + B_C)
+    .replace(LIFT_RE, '$1 ' + B_O);
+  /* 제어문자를 태그로 되돌린다. 항목별로 잘려 짝이 안 맞으면 보정한다.
+     굵게는 세 종류로 나뉜다 — 빈칸이 되는 건 '값'뿐이다
+       · 제목: 문단 전체가 굵게            (예: **불발 시 접근 금지시간**)
+       · 라벨: 굵게 바로 뒤에 : 또는 —     (예: **전기뇌관**: …)
+       · 값  : 나머지                      (예: **5분 이상**, **점토·모래**) */
+  const LABEL_AFTER = /^\s*[:：—–-]/;
+  function decBold(t, cls, allowHeading) {
+    let s = String(t ?? '');
+    if (s.includes(B_C) && !s.includes(B_O)) s = B_O + s;
+    if (s.includes(B_O) && !s.includes(B_C)) s = s + B_C;
+    const whole = s.trim();
+    const isHeading = !!allowHeading && whole.startsWith(B_O) && whole.endsWith(B_C)
+      && whole.indexOf(B_C) === whole.length - 1;
+    let out = '', i = 0;
+    while (i < s.length) {
+      const o = s.indexOf(B_O, i);
+      if (o < 0) { out += esc(s.slice(i)); break; }
+      out += esc(s.slice(i, o));
+      const c = s.indexOf(B_C, o);
+      const inner = c < 0 ? s.slice(o + 1) : s.slice(o + 1, c);
+      const rest = c < 0 ? '' : s.slice(c + 1);
+      const keep = isHeading || LABEL_AFTER.test(rest);
+      out += keep ? `<b>${esc(inner)}</b>` : `<b class="${cls}">${esc(inner)}</b>`;
+      i = c < 0 ? s.length : c + 1;
+    }
+    return out.replace(/==(.+?)==/g, `<mark class="${cls}">$1</mark>`);
+  }
+  // 요약 본문용 — fmtP는 문단(제목 판정 O), fmtC는 항목·셀(제목 판정 X)
+  const fmtC = s => decBold(encBold(s), 'cloze', false);
+  const fmtP = s => decBold(encBold(s), 'cloze', true);
   /* 요약 본문 렌더
      - 기존 데이터(html:true)는 HTML(<b>, <br>)을 그대로 쓴다
      - 새 데이터는 마크다운 표 → 표/카드, `· `·`- ` 불릿 → 목록, 나머지는 줄바꿈 + **굵게** */
@@ -97,6 +135,30 @@
     }).join('') + '</div>';
   }
 
+  /* 한 줄에 ①②③… 이 오름차순으로 2개 이상 나열되면 항목마다 줄을 나눈다.
+     단 "투입 ③①② / 차단 ②③①"처럼 순서를 나타내는 값은 건드리지 않는다 */
+  function splitNumbered(raw) {
+    const l = encBold(raw);
+    const hits = [];
+    for (let i = 0; i < l.length; i++) if (NO_RE.test(l[i])) hits.push(i);
+    if (hits.length < 2) return null;
+    // ①부터 차례대로여야 하고, 번호 뒤에는 공백 + 내용이 와야 한다
+    for (let k = 0; k < hits.length; k++) {
+      if (noVal(l[hits[k]]) !== k + 1) return null;
+      const after = l.slice(hits[k] + 1, hits[k] + 2);
+      if (after && !/[\s\u0001\u0002]/.test(after)) return null;
+    }
+    const lead = l.slice(0, hits[0]).trim().replace(/[:：]\s*$/, ':');
+    const items = hits.map((p, k) => ({
+      no: l[p],
+      text: l.slice(p + 1, k + 1 < hits.length ? hits[k + 1] : l.length).trim()
+    })).filter(x => x.text.replace(/[\u0001\u0002\s]/g, ''));
+    if (items.length < 2) return null;
+    return (lead ? `<p class="nb-p nb-lead">${decBold(lead, 'cloze', true)}</p>` : '')
+      + `<ul class="nb-nl">${items.map(x =>
+          `<li><span class="nb-no">${esc(x.no)}</span><span>${decBold(x.text, 'cloze', false)}</span></li>`).join('')}</ul>`;
+  }
+
   function mdBody(src) {
     const lines = String(src ?? '').split('\n');
     let out = '', i = 0, para = [], list = [];
@@ -117,7 +179,9 @@
       const bullet = l.match(/^\s*(?:·|-|•)\s+(.*)$/);
       if (bullet) { flushPara(); list.push(`<li>${fmtC(bullet[1])}</li>`); i++; continue; }
       if (!l.trim()) { flush(); i++; continue; }
-      flushList(); para.push(fmtC(l)); i++;
+      const numbered = splitNumbered(l);
+      if (numbered) { flush(); out += numbered; i++; continue; }
+      flushList(); para.push(fmtP(l)); i++;
     }
     flush();
     return out;
@@ -315,13 +379,19 @@
     const blocks = (ch.notes || []).map(n => `
       <section class="card sum-card">
         <h3>${fmt(n.title)}</h3>
-        ${(n.tags || []).length ? `<div class="terms">${n.tags.map(t => `<span class="term cloze">#${esc(t)}</span>`).join('')}</div>` : ''}
+        ${(n.tags || []).length ? `<div class="terms">${n.tags.map(t => `<span class="term">#${esc(t)}</span>`).join('')}</div>` : ''}
         <div class="note-body">${noteBody(n)}</div>
       </section>`).join('');
+    const points = (ch.points || []).length ? `
+      <section class="card points-card">
+        <h3>시험 포인트</h3>
+        <ol>${ch.points.map(p => `<li>${fmtC(p)}</li>`).join('')}</ol>
+      </section>` : '';
     const done = !!S.done[ch.id];
     const s = chStats(ch);
     // 굵게 표시된 핵심 숫자·용어가 빈칸이 된다
-    const hasBlank = (ch.notes || []).some(n => n.html ? /<b>/.test(n.body || '') : /\*\*.+?\*\*/.test(n.body || ''));
+    const hasBlank = (ch.points || []).some(p => /\*\*.+?\*\*/.test(p))
+      || (ch.notes || []).some(n => n.html ? /<b>/.test(n.body || '') : /\*\*.+?\*\*/.test(n.body || ''));
     const on = !!S.blankMode && hasBlank;
     body.innerHTML = `
       ${hasBlank ? `<div class="blank-bar">
@@ -329,7 +399,7 @@
         ${on ? '<button class="btn sm" id="revealBtn">모두 보기</button>' : ''}
         <span class="blank-hint">${on ? '빈칸을 눌러 답 확인' : '핵심 숫자·용어를 가립니다'}</span>
       </div>` : ''}
-      <div class="stack sum-body ${on ? 'blanks' : ''}">${blocks || '<div class="empty">요약이 아직 없어요.</div>'}</div>
+      <div class="stack sum-body ${on ? 'blanks' : ''}">${points}${blocks || '<div class="empty">요약이 아직 없어요.</div>'}</div>
       <div class="stack" style="margin-top:18px">
         <button class="btn block ${done ? 'ok' : ''}" id="doneBtn">${done ? '✓ 학습 완료' : '학습 완료로 표시'}</button>
         ${s.mc ? `<a class="btn primary block" href="#/ch/${ch.id}?tab=mc" data-go="mc">4지선다 풀러 가기 (${s.mc})</a>` : ''}

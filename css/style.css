@@ -400,6 +400,33 @@ a.sec-item.card .sec-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; }
 }
 .note-body .tc-k { color: var(--text-3); font-size: 12.5px; font-weight: 600; padding-top: 2px; }
 
+/* 시험 포인트 카드 */
+.points-card { background: var(--brand-soft); border-color: transparent; }
+.points-card h3 { color: var(--brand); font-size: 16px; font-weight: 750; margin: 0 0 6px; letter-spacing: -0.02em; }
+.points-card ol { margin: 0; padding: 0; list-style: none; counter-reset: pt; }
+.points-card li {
+  position: relative; padding-left: 26px; margin: 8px 0;
+  font-size: 14.5px; line-height: 1.65; color: var(--text-2); counter-increment: pt;
+}
+.points-card li b { color: var(--text); }
+.points-card li::before {
+  content: counter(pt); position: absolute; left: 0; top: .2em;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--brand); color: #fff;
+  font-size: 11.5px; font-weight: 700; display: grid; place-items: center;
+}
+.blanks .points-card .cloze { background: color-mix(in srgb, var(--warn-soft) 70%, #fff); }
+
+/* 요약 본문 — ①②③ 번호 목록 */
+.note-body .nb-lead { margin-bottom: 4px; }
+.note-body .nb-nl { margin: 0 0 10px; padding: 0; list-style: none; }
+.note-body .nb-nl:last-child { margin-bottom: 0; }
+.note-body .nb-nl li {
+  display: grid; grid-template-columns: 1.55em 1fr; gap: 2px;
+  margin: 3px 0; align-items: start;
+}
+.note-body .nb-no { color: var(--text-3); font-weight: 700; font-variant-emoji: text; }
+
 /* ---------------- 빈칸 모드 ---------------- */
 .blank-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
 .blank-bar .btn.on { background: var(--warn); border-color: var(--warn); color: #fff; }
@@ -414,7 +441,8 @@ a.sec-item.card .sec-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; }
 }
 .blanks .cloze * { color: transparent; }
 .blanks .cloze.shown, .blanks .cloze.shown * { color: var(--text); }
-.blanks .terms .term.shown { color: var(--brand); }
+/* 항목번호(①②③)와 키워드 태그는 길잡이라 가리지 않는다 */
+.blanks .nb-no, .blanks .terms .term { color: var(--text-3); }
 /* 표 헤더·카드 제목·라벨은 문제 쪽이므로 가리지 않는다 */
 .blanks th .cloze, .blanks .tc-h .cloze, .blanks .tc-k .cloze {
   color: inherit; background: none; border-bottom: 0; cursor: auto;
