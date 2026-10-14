@@ -370,6 +370,11 @@ a.sec-item.card .sec-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; }
 .note-body .nb-h { margin: 12px 0 4px; color: var(--text); }
 .note-body .nb-h:first-child { margin-top: 0; }
 
+/* 소제목에 종속된 하위 항목 — 한 단 들여쓰기 */
+.note-body .sub { margin-left: 14px; }
+.note-body .sub2 { margin-left: 28px; }
+.note-body .nb-ul.sub li::before { background: none; border: 1.5px solid var(--text-3); width: 5px; height: 5px; top: .66em; }
+
 /* 요약 본문 — 셀이 짧은 표 */
 .note-body .tscroll {
   overflow-x: auto; border: 1px solid var(--line); border-radius: 12px;

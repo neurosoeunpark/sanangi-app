@@ -113,20 +113,20 @@
   const isSep = l => /^\s*\|[\s:|-]+\|\s*$/.test(l);
   const cellsOf = l => l.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim());
 
-  function mdTable(head, rows) {
+  function mdTable(head, rows, sub) {
     if (!rows.length) return '';
     const cols = head.length;
     const long = rows.some(r => r.some(c => c.length > 26)) || head.some(c => c.length > 26);
     if (!long) {
       // 셀이 짧으면 진짜 표로 (좁은 화면에서는 가로 스크롤)
-      return '<div class="tscroll"><table><thead><tr>'
+      return `<div class="tscroll${sub ? ' sub' : ''}"><table><thead><tr>`
         + head.map(c => `<th>${fmt(c)}</th>`).join('')
         + '</tr></thead><tbody>'
         + rows.map(r => '<tr>' + head.map((_, i) => `<td>${fmtC(r[i] || '')}</td>`).join('') + '</tr>').join('')
         + '</tbody></table></div>';
     }
     // 긴 셀은 행마다 카드로 쪼갠다
-    return '<div class="tcards">' + rows.map(r => {
+    return `<div class="tcards${sub ? ' sub' : ''}">` + rows.map(r => {
       const headCell = `<div class="tc-h">${fmt(r[0] || '')}</div>`;
       if (cols === 2) return `<div class="tcard">${headCell}<div class="tc-b">${fmtC(r[1] || '')}</div></div>`;
       const body = head.slice(1).map((h, i) => r[i + 1]
@@ -155,7 +155,7 @@
     })).filter(x => x.text.replace(/[\u0001\u0002\s]/g, ''));
     if (items.length < 2) return null;
     return (lead ? `<p class="nb-p nb-lead">${decBold(lead, 'cloze', true)}</p>` : '')
-      + `<ul class="nb-nl">${items.map(x =>
+      + `<ul class="nb-nl${lead ? ' sub' : ''}">${items.map(x =>
           `<li><span class="nb-no">${esc(x.no)}</span><span>${decBold(x.text, 'cloze', false)}</span></li>`).join('')}</ul>`;
   }
 
@@ -168,7 +168,14 @@
   function mdBody(src) {
     const lines = String(src ?? '').split('\n');
     let out = '', i = 0, para = [], list = [];
-    const flushList = () => { if (list.length) { out += `<ul class="nb-ul">${list.join('')}</ul>`; list = []; } };
+    // 소제목 바로 아래 항목은 종속관계이므로 한 단 들여쓴다
+    let underHead = false, listSub = 0;
+    const flushList = () => {
+      if (list.length) {
+        out += `<ul class="nb-ul${listSub ? ' sub' + (listSub > 1 ? '2' : '') : ''}">${list.join('')}</ul>`;
+        list = []; listSub = 0;
+      }
+    };
     const flushPara = () => { if (para.length) { out += `<p class="nb-p">${para.join('<br>')}</p>`; para = []; } };
     const flush = () => { flushPara(); flushList(); };
     while (i < lines.length) {
@@ -179,17 +186,32 @@
         i += 2;
         const rows = [];
         while (i < lines.length && isRow(lines[i]) && !isSep(lines[i])) { rows.push(cellsOf(lines[i])); i++; }
-        out += mdTable(head, rows);
+        out += mdTable(head, rows, underHead);
+        underHead = false;
         continue;
       }
-      const bullet = l.match(/^\s*(?:·|-|•)\s+(.*)$/);
-      if (bullet) { flushPara(); list.push(`<li>${fmtC(bullet[1])}</li>`); i++; continue; }
-      if (!l.trim()) { flush(); i++; continue; }
+      const bullet = l.match(/^([ \t]*)(?:·|-|•)[ \t]+(.*)$/);
+      if (bullet) {
+        flushPara();
+        // 들여쓰기 깊이 = 소제목 종속(1) + 원문 선행공백(탭 또는 공백 2칸당 1단)
+        const srcDepth = Math.floor(bullet[1].replace(/\t/g, '  ').length / 2);
+        if (!list.length) listSub = Math.min((underHead ? 1 : 0) + srcDepth, 2);
+        list.push(`<li>${fmtC(bullet[2])}</li>`);
+        i++; continue;
+      }
+      if (!l.trim()) { flush(); underHead = false; i++; continue; }
       const numbered = splitNumbered(l);
-      if (numbered) { flush(); out += numbered; i++; continue; }
+      if (numbered) { flush(); out += numbered; underHead = false; i++; continue; }
       // 줄 전체가 굵게면 소제목, 나머지 평문은 모두 불릿으로 통일
-      if (isHeadingLine(l)) { flush(); out += `<p class="nb-p nb-h">${fmtP(l)}</p>`; i++; continue; }
-      flushPara(); list.push(`<li>${fmtC(l)}</li>`); i++;
+      if (isHeadingLine(l)) {
+        flush();
+        out += `<p class="nb-p nb-h">${fmtP(l)}</p>`;
+        underHead = true; i++; continue;
+      }
+      flushPara();
+      if (!list.length) listSub = underHead ? 1 : 0;
+      list.push(`<li>${fmtC(l)}</li>`);
+      i++;
     }
     flush();
     return out;
